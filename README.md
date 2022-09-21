@@ -2,8 +2,7 @@
 
 ## Database Schema Design
 
-`<insert database schema design here>`
-
+![Database Schema](./assets/AirBnB_Database_Schema_9_21_22.jpg)
 ## API Documentation
 
 ## USER AUTHENTICATION/AUTHORIZATION
