@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/Allendpham/AirBnB/issues"
   },
-  "homepage": "https://github.com/Allendpham/AirBnB#readme"
+  "homepage": "https://github.com/Allendpham/AirBnB#readme",
+  "dependencies": {
+    "pg": "^8.8.0"
+  }
 }
