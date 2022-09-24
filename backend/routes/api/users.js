@@ -36,11 +36,17 @@ router.post(
     const { firstName, lastName, email, password, username } = req.body;
     const user = await User.signup({ firstName, lastName, email, username, password });
 
-    await setTokenCookie(res, user);
+    let token = await setTokenCookie(res, user);
 
     return res.json({
-      user,
+      id: user.id,
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      token
     });
+
   }
 );
 

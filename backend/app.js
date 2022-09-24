@@ -61,6 +61,22 @@ app.use((err, _req, _res, next) => {
   if (err instanceof ValidationError) {
     err.errors = err.errors.map((e) => e.message);
     err.title = 'Validation error';
+
+    //if error is a unique email validation error
+    if(err.errors[0].message = 'email must be unique'){
+      err.message = 'User already exists';
+      err.status = 403;
+    }
+
+    //if error is a unique username validation error
+    else if(err.errors[0].message = 'username must be unique'){
+      err.message = 'User already exists';
+      err.status = 403;
+    }
+
+    else {
+      err.status = 400;
+    }
   }
   next(err);
 });
@@ -68,9 +84,10 @@ app.use((err, _req, _res, next) => {
 // Error formatter
 app.use((err, _req, res, _next) => {
   res.status(err.status || 500);
-  console.error(err);
+  
   res.json({
     title: err.title || 'Server Error',
+    statusCode: err.status,
     message: err.message,
     errors: err.errors,
     stack: isProduction ? null : err.stack
