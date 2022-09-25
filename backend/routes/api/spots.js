@@ -72,6 +72,29 @@ router.get('/current', requireAuth, async(req, res, next) => {
    res.json({Spots: resp})
 })
 
+//Edit a Spot
+router.put('/:spotId', requireAuth, async( req, res, next ) => {
+   const spot = await Spot.findByPk(req.params.spotId);
+   const userId = req.user.id;
+   const {address, city, state, country, lat, lng, name, description, price} = req.body;
+
+   if(!spot){
+      const err = new Error("Spot couldn't be found");
+      err.status = 404;
+      return next(err);
+   } else if (userId !== spot.ownerId){
+      const err = new Error('User is not owner of spot');
+      err.status = 403;
+      return next(err);
+   } else {
+      spot.set({
+         address, city, state, country, lat, lng, name, description, price
+      })
+      await spot.save();
+      res.json(spot);
+   }
+})
+
 //Get details of a Spot from an Id
 router.get('/:spotId', async( req, res, next ) => {
    const spot = await Spot.findByPk(req.params.spotId, {
