@@ -94,7 +94,7 @@ router.get('/current', requireAuth, async(req, res, next) => {
          where: {
             spotId: ownedSpots[i].id
          },
-         attribute: ['url'],
+         attributes: ['url'],
          raw: true
       })
 

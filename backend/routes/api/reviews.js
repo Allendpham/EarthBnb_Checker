@@ -5,6 +5,7 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const {Op} = require('sequelize');
 const router = express.Router();
 
+//Add an Image to an Existing Review
 router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
    const review = await Review.findByPk(req.params.reviewId);
    const userId = req.user.id;
@@ -44,5 +45,56 @@ router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
    }
 })
 
+//Get all Reviews of the Current User
+router.get('/current', requireAuth, async (req, res, next) => {
+   const userId = req.user.id;
+
+   const reviews = await Review.findAll({
+      where: {
+         userId: userId
+      },
+      include: [{
+         model: User,
+         attributes: ['id', 'firstName', 'lastName']
+      },
+      {
+         model: ReviewImage,
+         attributes: ['id', 'url']
+      }]
+   });
+
+   let resp = [];
+   for(let i = 0; i < reviews.length; i++){
+      let reviewData = reviews[i];
+      let spotData = await reviewData.getSpot();
+      let previewImage = await SpotImage.findAll({
+         where: {
+            spotId: spotData.id
+         },
+         attribute: ['url'],
+         raw: true
+      })
+
+      reviewData.dataValues.Spot = {
+         id: spotData.id,
+         ownerId: spotData.ownerId,
+         address: spotData.address,
+         city: spotData.city,
+         state: spotData.state,
+         country: spotData.country,
+         lat: spotData.lat,
+         lng: spotData.lng,
+         name: spotData.name,
+         price: spotData.price,
+         previewImage: previewImage[0].url
+      }
+
+      resp.push(reviewData);
+   }
+
+   res.json({
+      'Reviews': resp
+   });
+})
 
 module.exports = router;
