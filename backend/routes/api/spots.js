@@ -40,6 +40,48 @@ router.get('/current', requireAuth, async(req, res, next) => {
    res.json({Spots: resp})
 })
 
+//Create a spot
+router.post('/', requireAuth, async( req, res, next ) => {
+   const userId = req.user.id;
+   const {address, city, state, country, lat, lng, name, description, price} = req.body;
+
+   try{
+   const newSpot = await Spot.create({
+      ownerId: userId,
+      address,
+      city,
+      state,
+      country,
+      lat: lat,
+      lng: lng,
+      name,
+      description,
+      price
+   })
+      res.statusCode = 201;
+      res.json(newSpot)
+   } catch (err){
+         const error = new Error('Validation Error')
+         error.statusCode = 400;
+         error.errors = {
+         "address": "Street address is required",
+         "city": "City is required",
+         "state": "State is required",
+         "country": "Country is required",
+         "lat": "Latitude is not valid",
+         "lng": "Longitude is not valid",
+         "name": "Name must be less than 50 characters",
+         "description": "Description is required",
+         "price": "Price per day is required"
+       };
+       console.log(error)
+       res.json({
+         message: 'Validation Error',
+         ...error
+      });
+   }
+})
+
 //Get all spots
 router.get('/', async(req, res) => {
    const allSpots = await Spot.findAll({});

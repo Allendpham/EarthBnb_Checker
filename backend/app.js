@@ -63,13 +63,13 @@ app.use((err, _req, _res, next) => {
     err.title = 'Validation error';
 
     //if error is a unique email validation error
-    if(err.errors[0].message = 'email must be unique'){
+    if(err.errors[0].message === 'email must be unique'){
       err.message = 'User already exists';
       err.status = 403;
     }
 
     //if error is a unique username validation error
-    else if(err.errors[0].message = 'username must be unique'){
+    else if(err.errors[0].message === 'username must be unique'){
       err.message = 'User already exists';
       err.status = 403;
     }
