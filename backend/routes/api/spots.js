@@ -6,12 +6,17 @@ const router = express.Router();
 //Add an Image to a Spot based on the Spot's Id
 router.post('/:spotId/images', requireAuth, async(req, res, next) => {
    const spot = await Spot.findByPk(req.params.spotId);
+   const userId = req.user.id;
    const {url, preview} = req.body;
 
    if(!spot){
       const err = new Error("Spot couldn't be found");
       err.status = 404;
-      return next(err)
+      return next(err);
+   } else if (userId !== spot.ownerId){
+      const err = new Error('User is not owner of spot');
+      err.status = 403;
+      return next(err);
    } else {
       const newImage = await SpotImage.create({
          spotId: spot.id,
@@ -43,7 +48,8 @@ router.get('/current', requireAuth, async(req, res, next) => {
                },
                attributes: [
                   [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']
-               ]
+               ],
+               raw: true
             });
 
       const image = await SpotImage.findAll({
@@ -56,7 +62,7 @@ router.get('/current', requireAuth, async(req, res, next) => {
       let {id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt} = ownedSpots[i];
       resp.push({
                id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt,
-               avgRating: Number(avg[0].dataValues.avgRating),
+               avgRating: Number(avg[0].avgRating),
                previewImage: image[0].dataValues.url
             })
    }
@@ -118,7 +124,8 @@ router.get('/', async(req, res) => {
                },
                attributes: [
                   [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']
-               ]
+               ],
+               raw: true
             });
 
       const image = await SpotImage.findAll({
@@ -131,7 +138,7 @@ router.get('/', async(req, res) => {
       let {id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt} = allSpots[i];
       resp.push({
                id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt,
-               avgRating: Number(avg[0].dataValues.avgRating),
+               avgRating: Number(avg[0].avgRating),
                previewImage: image[0].dataValues.url
             })
    }
