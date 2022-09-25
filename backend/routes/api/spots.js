@@ -2,7 +2,44 @@ const express = require('express');
 const { Spot, Review, SpotImage, sequelize, User } = require('../../db/models');
 const spot = require('../../db/models/spot');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
+const {Op} = require('sequelize');
 const router = express.Router();
+
+//Create a Review for a Spot based on the Spot's id
+router.post('/:spotId/reviews', requireAuth, async(req, res, next) => {
+   const spot = await Spot.findByPk(req.params.spotId);
+   const userId = req.user.id;
+   const { review, stars } = req.body;
+
+   if(!spot){
+      const err = new Error("Spot couldn't be found");
+      err.status = 404;
+      return next(err);
+   } else {
+      const existingReview = await Review.findAll({
+         where: {
+            [Op.and]: [
+               { spotId: spot.id },
+               { userId: userId }
+            ]
+         }
+      });
+
+      if(existingReview.length){
+         const err = new Error("User already has a review for this spot");
+         err.status = 403;
+         return next(err);
+      } else {
+         let newReview = await Review.create({
+            userId,
+            spotId: spot.id,
+            review,
+            stars
+         })
+         res.json(newReview);
+      }
+   }
+})
 
 //Add an Image to a Spot based on the Spot's Id
 router.post('/:spotId/images', requireAuth, async(req, res, next) => {
