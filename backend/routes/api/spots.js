@@ -27,7 +27,7 @@ router.get('/', async(req, res) => {
       let {id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt} = allSpots[i];
       resp.push({
                id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt,
-               avgRating: avg[0].dataValues.avgRating,
+               avgRating: Number(avg[0].dataValues.avgRating),
                previewImage: image[0].dataValues.url
             })
    }
