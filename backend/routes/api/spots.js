@@ -56,14 +56,15 @@ router.get('/current', requireAuth, async(req, res, next) => {
          where: {
             spotId: ownedSpots[i].id
          },
-         attribute: ['url']
+         attribute: ['url'],
+         raw: true
       })
 
       let {id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt} = ownedSpots[i];
       resp.push({
                id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt,
                avgRating: Number(avg[0].avgRating),
-               previewImage: image[0].dataValues.url
+               previewImage: image[0].url
             })
    }
 
