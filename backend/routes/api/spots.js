@@ -85,20 +85,20 @@ router.get('/:spotId', async( req, res, next ) => {
       }]
    });
 
-   const reviewData = await Review.findAll({
-      where: {
-         spotId: spot.id
-      },
-      attributes: [[sequelize.fn('AVG', sequelize.col('stars')), 'avgRating'],
-                  [sequelize.fn('COUNT', sequelize.col('id')), 'numReviews']],
-      raw: true
-   });
-
    if(!spot){
       const err = new Error("Spot couldn't be found");
       err.status = 404;
       next(err);
    } else {
+      const reviewData = await Review.findAll({
+         where: {
+            spotId: spot.id
+         },
+         attributes: [[sequelize.fn('AVG', sequelize.col('stars')), 'avgRating'],
+                     [sequelize.fn('COUNT', sequelize.col('id')), 'numReviews']],
+         raw: true
+      });
+
       spot.dataValues.numReviews = reviewData[0].numReviews;
       spot.dataValues.avgStarRating = reviewData[0].avgRating;
 
