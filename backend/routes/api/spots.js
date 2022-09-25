@@ -3,6 +3,30 @@ const { Spot, Review, SpotImage, sequelize } = require('../../db/models');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const router = express.Router();
 
+//Add an Image to a Spot based on the Spot's Id
+router.post('/:spotId/images', requireAuth, async(req, res, next) => {
+   const spot = await Spot.findByPk(req.params.spotId);
+   const {url, preview} = req.body;
+
+   if(!spot){
+      const err = new Error("Spot couldn't be found");
+      err.status = 404;
+      return next(err)
+   } else {
+      const newImage = await SpotImage.create({
+         spotId: spot.id,
+         url,
+         preview
+      })
+      res.json({
+         id: newImage.id,
+         url: newImage.url,
+         preview: newImage.preview
+      });
+   }
+
+})
+
 //Get all spots owned by current user
 router.get('/current', requireAuth, async(req, res, next) => {
    const userId = req.user.id;
