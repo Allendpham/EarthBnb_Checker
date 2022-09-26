@@ -361,7 +361,90 @@ router.post('/', requireAuth, async( req, res, next ) => {
 
 //Get all spots
 router.get('/', async(req, res) => {
-   const allSpots = await Spot.findAll({});
+   let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query;
+   const {Op} = require('sequelize');
+
+   let limit;
+   let offset;
+   let where = {};
+   let errors = {};
+   //Check page query
+   if(!page || isNaN(parseInt(page))) page = 1;
+   else if (parseInt(page < 1)){
+      errors.page = "Page must be greater than or equal to 1"
+   }
+
+   //Check size query
+   if(!size || isNaN(parseInt(size))) size = 20;
+   else if (parseInt(size < 1)){
+      errors.size = "Size must be greater than or equal to 1"
+   }
+
+   //Check minLat
+   if(minLat && isNaN(minLat)){
+      errors.minLat = "Minimum latitude is invalid"
+   } else if (minLat && !maxLat){
+      where.lat = {[Op.gte]: Number(minLat)}
+   }
+
+   //Check maxLat
+   if(maxLat && isNaN(maxLat)){
+      errors.maxLat = "Maximum latitude is invalid"
+   } else if (maxLat && !minLat){
+      where.lat = {[Op.lte]: Number(maxLat)}
+   } else if (maxLat && minLat){
+      where.lat = {[Op.between]: [Number(minLat), Number(maxLat)]}
+   }
+
+   //Check minLng
+   if(minLng && isNaN(minLng)){
+      errors.minLng = "Minimum longitude is invalid"
+   } else if (minLng && !maxLng){
+      where.lng = {[Op.gte]: Number(minLng)}
+   }
+
+   //Check maxLng
+   if(maxLng && isNaN(maxLng)){
+      errors.maxLng = "Maximum longitude is invalid"
+   } else if (maxLng && !minLng){
+      where.lng = {[Op.lte]: Number(maxLng)}
+   } else if(maxLng && minLng){
+      where.lng = {[Op.between]: [Number(minLng), Number(maxLng)]}
+   }
+
+   //Check minPrice
+   if(minPrice && (parseInt(minPrice) < 0)){
+      errors.minPrice = "Minimum price must be greater than or equal to 0"
+   } else if (minPrice && !maxPrice){
+      where.price = {[Op.gte]: Number(minPrice)}
+   }
+
+   //Check maxPrice
+   if(maxPrice && (parseInt(maxPrice) < 0)){
+      errors.maxPrice = "Maximum price must be greater than or equal to 0"
+   } else if (maxPrice && !minPrice){
+      where.price = {[Op.lte]: Number(maxPrice)}
+   } else if (maxPrice && minPrice){
+      where.price = {[Op.between]: [Number(minPrice), Number(maxPrice)]}
+   }
+
+   //If any errors exist, Send error message
+   if(Object.keys(errors).length){
+      res.status = 400;
+      let error = {
+         "message": "Validation Error",
+         "statusCode": 400,
+         errors
+      }
+      return res.json(error);
+   } else {
+      page = parseInt(page);
+      size = parseInt(size);
+      limit = size;
+      offset = size * (page - 1)
+   }
+
+   const allSpots = await Spot.findAll({where, limit, offset, raw: true});
 
    let resp = []
    for(let i = 0; i < allSpots.length; i++){
@@ -379,18 +462,22 @@ router.get('/', async(req, res) => {
          where: {
             spotId: allSpots[i].id
          },
-         attribute: ['url']
+         attribute: ['url'],
+         raw: true
       })
 
       let {id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt} = allSpots[i];
       resp.push({
                id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt,
                avgRating: Number(avg[0].avgRating),
-               previewImage: image[0].dataValues.url
+               previewImage: image[0].url
             })
    }
 
-   res.json({Spots: resp})
+   res.json({Spots: resp,
+      page,
+      size
+   })
 })
 
 module.exports = router;
