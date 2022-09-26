@@ -6,6 +6,46 @@ const {Op} = require('sequelize');
 const e = require('express');
 const router = express.Router();
 
+//Get all Bookings for a Spot based on the Spot's id
+router.get('/:spotId/bookings', requireAuth, async(req, res, next) => {
+   const spot = await Spot.findByPk(req.params.spotId);
+   const userId = req.user.id;
+
+   if(!spot){
+      const err = new Error("Spot couldn't be found");
+      err.status = 404;
+      return next(err);
+   } else {
+      if(spot.ownerId === userId){ //If user is owner of spot
+         const bookings = await Booking.findAll({
+            where: {
+               spotId: spot.id
+            },
+            include: {
+               model: User,
+               attributes: ['id', 'firstName', 'lastName']
+            }
+         })
+
+         res.json({
+            "Bookings": bookings
+         })
+      } else { //If user is NOT owner of spot
+         const bookings = await Booking.findAll({
+            where: {
+               spotId: spot.id
+            },
+            attributes: ['spotId', 'startDate', 'endDate']
+         });
+
+         res.json({
+            "Bookings": bookings
+         })
+      }
+   }
+
+})
+
 //Create a Booking from a Spot based on the Spot's id
 router.post('/:spotId/bookings', requireAuth, async(req, res, next) => {
    const spot = await Spot.findByPk(req.params.spotId);
@@ -64,7 +104,6 @@ router.post('/:spotId/bookings', requireAuth, async(req, res, next) => {
          res.json(newBooking)
 
    }
-
 })
 
 //Get all Reviews by a Spot's Id
