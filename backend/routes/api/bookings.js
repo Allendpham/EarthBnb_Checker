@@ -5,6 +5,38 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const {Op} = require('sequelize');
 const router = express.Router();
 
+//Delete a Booking
+router.delete('/:bookingId', requireAuth, async(req, res, next) => {
+   const userId = req.user.id;
+   const booking = await Booking.findByPk(req.params.bookingId);
+   let currentDate = new Date();
+
+   if(!booking){
+      const err = new Error("Booking couldn't be found");
+      err.status = 404;
+      return next(err);
+   } else {
+
+      let spot = await booking.getSpot();
+      if((booking.userId !== userId) && (spot.ownerId !== userId)){
+         const err = new Error('Booking must belong to user or Spot must be owned by user');
+         err.status = 403;
+         return next(err);
+      } else if(booking.startDate < currentDate){
+         const err = new Error("Bookings that have been started can't be deleted");
+         err.status = 403;
+         return next(err);
+      } else {
+         await booking.destroy();
+         res.json({
+            "message": "Successfully deleted",
+            "statusCode": 200
+          });
+      }
+
+   }
+})
+
 //Get all of the current user's bookings
 router.get('/current', requireAuth, async (req, res, next) => {
    const userId = req.user.id;
