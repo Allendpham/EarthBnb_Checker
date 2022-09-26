@@ -3,7 +3,6 @@ const { Spot, Review, SpotImage, sequelize, User, ReviewImage, Booking } = requi
 const spot = require('../../db/models/spot');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const {Op} = require('sequelize');
-const e = require('express');
 const router = express.Router();
 
 //Get all Bookings for a Spot based on the Spot's id
