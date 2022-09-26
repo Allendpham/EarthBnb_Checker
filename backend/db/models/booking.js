@@ -24,7 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     spotId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
     startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE
+    endDate: {
+      type: DataTypes.DATE
+    }
   }, {
     sequelize,
     modelName: 'Booking',
