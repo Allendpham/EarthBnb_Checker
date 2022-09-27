@@ -23,12 +23,10 @@ router.get(
   '/',
   restoreUser,
   (req, res) => {
-    const { token } = req.cookies;
     const { user } = req;
     if (user) {
       return res.json({
-        ...user.toSafeObject(),
-        token
+        ...user.toSafeObject()
       });
     } else return res.json({});
   }
