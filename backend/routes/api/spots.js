@@ -56,6 +56,7 @@ const validateSpot = [
    handleValidationErrors
  ];
 
+
 //Get all Bookings for a Spot based on the Spot's id
 router.get('/:spotId/bookings', requireAuth, async(req, res, next) => {
    const spot = await Spot.findByPk(req.params.spotId);
@@ -102,6 +103,20 @@ router.post('/:spotId/bookings', requireAuth, async(req, res, next) => {
    const userId = req.user.id;
 
    const {startDate, endDate} = req.body;
+   //Body Validation error if endDate is less than or equal to startDate
+   let checkStartDate = new Date(startDate);
+   let checkEndDate = new Date(endDate);
+
+   if(checkEndDate <= checkStartDate){
+      res.statusCode = 400;
+      return res.json({
+         "message": "Validation error",
+         "statusCode": 400,
+         "errors": {
+           "endDate": "endDate cannot be on or before startDate"
+         }
+       })
+   }
 
    if(!spot){
       const err = new Error("Spot couldn't be found");
@@ -118,8 +133,6 @@ router.post('/:spotId/bookings', requireAuth, async(req, res, next) => {
             spotId: spot.id
          }
       });
-      let checkStartDate = new Date(startDate);
-      let checkEndDate = new Date(endDate);
 
       for(let i = 0; i < existingBookings.length; i++){
          let existingStartDate = new Date(existingBookings[i].startDate);
