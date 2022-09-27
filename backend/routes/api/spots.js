@@ -206,17 +206,14 @@ router.get('/current', requireAuth, async(req, res, next) => {
    const ownedSpots = await Spot.findAll({
       where: {
          ownerId: userId
-      }
+      },
+      raw: true
    })
    let resp = []
    for(let i = 0; i < ownedSpots.length; i++){
       const avg = await Review.findAll({
-               where: {
-                  spotId: ownedSpots[i].id
-               },
-               attributes: [
-                  [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']
-               ],
+               where: {spotId: ownedSpots[i].id},
+               attributes: [[sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']],
                raw: true
             });
 
@@ -228,12 +225,9 @@ router.get('/current', requireAuth, async(req, res, next) => {
          raw: true
       })
 
-      let {id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt} = ownedSpots[i];
-      resp.push({
-               id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt,
-               avgRating: Number(avg[0].avgRating),
-               previewImage: image[0].url
-            })
+      ownedSpots[i].avgRating = Number(avg[0].avgRating);
+      ownedSpots[i].previewImage = image[0].url;
+      resp.push({ ...ownedSpots[i] })
    }
 
    res.json({Spots: resp})
@@ -450,14 +444,10 @@ router.get('/', async(req, res) => {
    let resp = []
    for(let i = 0; i < allSpots.length; i++){
       const avg = await Review.findAll({
-               where: {
-                  spotId: allSpots[i].id
-               },
-               attributes: [
-                  [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']
-               ],
-               raw: true
-            });
+         where: {spotId: allSpots[i].id},
+         attributes: [[sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']],
+            raw: true
+         });
 
       const image = await SpotImage.findAll({
          where: {
@@ -465,17 +455,15 @@ router.get('/', async(req, res) => {
          },
          attribute: ['url'],
          raw: true
-      })
+      });
 
-      let {id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt} = allSpots[i];
-      resp.push({
-               id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt,
-               avgRating: Number(avg[0].avgRating),
-               previewImage: image[0].url
-            })
+      allSpots[i].avgRating = Number(avg[0].avgRating);
+      allSpots[i].previewImage = image[0].url;
+      resp.push({ ...allSpots[i] });
    }
 
-   res.json({Spots: resp,
+   res.json({
+      Spots: resp,
       page,
       size
    })
