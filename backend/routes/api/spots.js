@@ -363,6 +363,7 @@ router.get('/', async(req, res) => {
    let offset;
    let where = {};
    let errors = {};
+   
    //Check page query
    if(!page || isNaN(parseInt(page))) page = 1;
    else if (parseInt(page < 1)){

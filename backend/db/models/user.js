@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       });
       if (user && user.validatePassword(password)) {
-        return await User.scope('currentUser').findByPk(user.id);
+        return await User.scope('currentUserExcludeDates').findByPk(user.id);
       }
     }
 
@@ -96,12 +96,10 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       firstName: {
-        type: DataTypes.STRING,
-        // allowNull: false
+        type: DataTypes.STRING
       },
       lastName: {
-        type: DataTypes.STRING,
-        // allowNull: false
+        type: DataTypes.STRING
       }
     },
     {
@@ -118,6 +116,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         loginUser: {
           attributes: {}
+        },
+        currentUserExcludeDates: {
+          attributes: { exclude: ['hashedPassword', 'createdAt', 'updatedAt'] }
         }
       }
     }
