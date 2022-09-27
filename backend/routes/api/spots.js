@@ -165,6 +165,7 @@ router.post('/:spotId/reviews', requireAuth, async(req, res, next) => {
             review,
             stars
          })
+         res.statusCode = 201;
          res.json(newReview);
       }
    }
