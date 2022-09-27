@@ -5,6 +5,44 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const {Op} = require('sequelize');
 const router = express.Router();
 
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
+
+const validateSpot = [
+   check('address')
+     .exists({ checkFalsy: true })
+     .withMessage('Street address is required.'),
+   check('city')
+     .exists({ checkFalsy: true })
+     .withMessage('City is required.'),
+   check('state')
+     .exists({ checkFalsy: true })
+     .withMessage('State is required.'),
+   check('country')
+     .exists({ checkFalsy: true })
+     .withMessage('Country is required.'),
+   check('lat')
+     .exists({ checkFalsy: true })
+     .isFloat()
+     .withMessage('Latitude is not valid.'),
+   check('lng')
+     .exists({ checkFalsy: true })
+     .isFloat()
+     .withMessage('Longitude is not valid.'),
+   check('name')
+     .exists({ checkFalsy: true })
+     .isLength({ max: 50 })
+     .withMessage('Name must be less than 50 characters.'),
+   check('description')
+     .exists({ checkFalsy: true })
+     .withMessage('Description is required.'),
+   check('price')
+     .exists({ checkFalsy: true })
+     .isNumeric()
+     .withMessage('Price per day is required and must be a number.'),
+   handleValidationErrors
+ ];
+
 //Get all Bookings for a Spot based on the Spot's id
 router.get('/:spotId/bookings', requireAuth, async(req, res, next) => {
    const spot = await Spot.findByPk(req.params.spotId);
@@ -311,46 +349,28 @@ router.get('/:spotId', async( req, res, next ) => {
    }
 })
 
+
+
 //Create a spot
-router.post('/', requireAuth, async( req, res, next ) => {
+router.post('/', requireAuth, validateSpot, async( req, res, next ) => {
    const userId = req.user.id;
    const {address, city, state, country, lat, lng, name, description, price} = req.body;
 
-   try{
    const newSpot = await Spot.create({
       ownerId: userId,
       address,
       city,
       state,
       country,
-      lat: lat,
-      lng: lng,
+      lat,
+      lng,
       name,
       description,
       price
    })
       res.statusCode = 201;
       res.json(newSpot)
-   } catch (err){
-         const error = new Error('Validation Error')
-         error.statusCode = 400;
-         error.errors = {
-         "address": "Street address is required",
-         "city": "City is required",
-         "state": "State is required",
-         "country": "Country is required",
-         "lat": "Latitude is not valid",
-         "lng": "Longitude is not valid",
-         "name": "Name must be less than 50 characters",
-         "description": "Description is required",
-         "price": "Price per day is required"
-       };
-       console.log(error)
-       res.json({
-         message: 'Validation Error',
-         ...error
-      });
-   }
+
 })
 
 //Get all spots
