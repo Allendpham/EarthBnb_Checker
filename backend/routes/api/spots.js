@@ -293,7 +293,7 @@ router.delete('/:spotId', requireAuth, async( req, res, next ) => {
 })
 
 //Edit a Spot
-router.put('/:spotId', requireAuth, async( req, res, next ) => {
+router.put('/:spotId', requireAuth, validateSpot, async( req, res, next ) => {
    const spot = await Spot.findByPk(req.params.spotId);
    const userId = req.user.id;
    const {address, city, state, country, lat, lng, name, description, price} = req.body;
@@ -476,7 +476,7 @@ router.get('/', async(req, res) => {
          attribute: ['url'],
          raw: true
       });
-      console.log(image);
+
       allSpots[i].avgRating = Number(avg[0].avgRating);
       image.length ? allSpots[i].previewImage = image[0].url : allSpots[i].previewImage = null;
 
