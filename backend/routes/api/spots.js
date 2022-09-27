@@ -71,9 +71,9 @@ router.post('/:spotId/bookings', requireAuth, async(req, res, next) => {
       let checkEndDate = new Date(endDate);
 
       for(let i = 0; i < existingBookings.length; i++){
-         let existingStartDate = existingBookings[i].startDate;
-         let existingEndDate = existingBookings[i].endDate;
-
+         let existingStartDate = new Date(existingBookings[i].startDate);
+         let existingEndDate = new Date(existingBookings[i].endDate);
+  
          if(checkStartDate >= existingStartDate && checkStartDate <= existingEndDate){
             const err = new Error("Sorry, this spot is already booked for the specified dates");
             err.status = 403;
@@ -363,7 +363,7 @@ router.get('/', async(req, res) => {
    let offset;
    let where = {};
    let errors = {};
-   
+
    //Check page query
    if(!page || isNaN(parseInt(page))) page = 1;
    else if (parseInt(page < 1)){
