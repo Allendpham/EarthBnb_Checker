@@ -363,7 +363,6 @@ router.get('/:spotId', async( req, res, next ) => {
 })
 
 
-
 //Create a spot
 router.post('/', requireAuth, validateSpot, async( req, res, next ) => {
    const userId = req.user.id;
@@ -503,4 +502,4 @@ router.get('/', async(req, res) => {
    })
 })
 
-module.exports = router;
+module.exports = {router, validateReview};

@@ -5,6 +5,8 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const {Op} = require('sequelize');
 const router = express.Router();
 
+const {validateReview} = require("./spots.js");
+
 //Add an Image to an Existing Review
 router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
    const review = await Review.findByPk(req.params.reviewId);
@@ -16,6 +18,7 @@ router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
       err.status = 404;
       return next(err);
    } else{
+
       const existingImages = await ReviewImage.findAll({
          where: {
             reviewId: review.id
@@ -98,7 +101,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 })
 
 //Edit a Review
-router.put('/:reviewId', requireAuth, async(req, res, next) => {
+router.put('/:reviewId', requireAuth, validateReview, async(req, res, next) => {
    const reviewToEdit = await Review.findByPk(req.params.reviewId);
    const userId = req.user.id;
    const {review, stars} = req.body;
