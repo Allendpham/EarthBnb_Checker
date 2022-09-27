@@ -8,6 +8,7 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+//Use Express Validator to validate body content of an inputted spot
 const validateSpot = [
    check('address')
      .exists({ checkFalsy: true })
@@ -40,6 +41,18 @@ const validateSpot = [
      .exists({ checkFalsy: true })
      .isNumeric()
      .withMessage('Price per day is required and must be a number.'),
+   handleValidationErrors
+ ];
+
+ //Use Express Validator to validate body content of an inputted review
+ const validateReview = [
+   check('review')
+     .exists({ checkFalsy: true })
+     .withMessage('Review text is required.'),
+   check('stars')
+     .exists({ checkFalsy: true })
+     .isInt({gt: 0, lt: 6})
+     .withMessage('Stars must be an integer from 1 to 5.'),
    handleValidationErrors
  ];
 
@@ -173,7 +186,7 @@ router.get('/:spotId/reviews', async(req, res, next) => {
 })
 
 //Create a Review for a Spot based on the Spot's id
-router.post('/:spotId/reviews', requireAuth, async(req, res, next) => {
+router.post('/:spotId/reviews', requireAuth, validateReview, async(req, res, next) => {
    const spot = await Spot.findByPk(req.params.spotId);
    const userId = req.user.id;
    const { review, stars } = req.body;
