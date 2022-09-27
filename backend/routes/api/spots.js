@@ -73,7 +73,7 @@ router.post('/:spotId/bookings', requireAuth, async(req, res, next) => {
       for(let i = 0; i < existingBookings.length; i++){
          let existingStartDate = new Date(existingBookings[i].startDate);
          let existingEndDate = new Date(existingBookings[i].endDate);
-  
+
          if(checkStartDate >= existingStartDate && checkStartDate <= existingEndDate){
             const err = new Error("Sorry, this spot is already booked for the specified dates");
             err.status = 403;
@@ -224,9 +224,8 @@ router.get('/current', requireAuth, async(req, res, next) => {
          attributes: ['url'],
          raw: true
       })
-
       ownedSpots[i].avgRating = Number(avg[0].avgRating);
-      ownedSpots[i].previewImage = image[0].url;
+      image.length ? ownedSpots[i].previewImage = image[0].url: ownedSpots[i].previewImage = null;
       resp.push({ ...ownedSpots[i] })
    }
 
@@ -457,9 +456,10 @@ router.get('/', async(req, res) => {
          attribute: ['url'],
          raw: true
       });
-
+      console.log(image);
       allSpots[i].avgRating = Number(avg[0].avgRating);
-      allSpots[i].previewImage = image[0].url;
+      image.length ? allSpots[i].previewImage = image[0].url : allSpots[i].previewImage = null;
+
       resp.push({ ...allSpots[i] });
    }
 
