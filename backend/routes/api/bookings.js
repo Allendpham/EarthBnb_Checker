@@ -22,7 +22,7 @@ router.delete('/:bookingId', requireAuth, async(req, res, next) => {
          const err = new Error('Booking must belong to user or Spot must be owned by user');
          err.status = 403;
          return next(err);
-      } else if(booking.startDate < currentDate){
+      } else if(booking.startDate <= currentDate && booking.endDate >= currentDate){
          const err = new Error("Bookings that have been started can't be deleted");
          err.status = 403;
          return next(err);
