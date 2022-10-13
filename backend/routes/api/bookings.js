@@ -132,8 +132,6 @@ router.put('/:bookingId', requireAuth, async(req, res, next) => {
          if(checkEndDate >= existingStartDate && checkEndDate <= existingEndDate) {
             errors.endDate = "End date conflicts with an existing booking";
          }
-         console.log(existingStartDate, existingEndDate)
-         console.log(startDate, endDate)
          if(Object.keys(errors).length){
             res.statusCode = 403;
             return res.json({
