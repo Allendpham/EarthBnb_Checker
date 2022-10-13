@@ -1,11 +1,11 @@
-// frontend/src/components/LoginFormPage/index.js
+// frontend/src/components/LoginFormModal/LoginForm.js
 import React, { useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import './LoginForm.css';
 
-function LoginFormPage () {
+function LoginForm () {
    const dispatch = useDispatch();
    const sessionUser = useSelector(state => state.session.user);
    const [credential, setCredential] = useState('');
@@ -55,4 +55,4 @@ function LoginFormPage () {
     );
 }
 
-export default LoginFormPage;
+export default LoginForm;
