@@ -2,7 +2,7 @@ import React from 'react';
 import {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
-import {getAllSpots} from '../../store/spots';
+import {getAllSpots, actionRemoveASpot} from '../../store/spots';
 
 function AccountPage (){
    const dispatch = useDispatch();
@@ -23,8 +23,7 @@ function AccountPage (){
             {ownedSpots?.map((spot) => (
                <li key={spot.id}>{spot.name}
                <Link to={`/spots/${spot.id}/edit`}>Edit</Link>
-               {/* <button>Edit</button> */}
-               <button>Delete</button>
+               <button onClick={() => dispatch(actionRemoveASpot(spot.id))}>Delete</button>
                </li>
             ))}
          </ul>

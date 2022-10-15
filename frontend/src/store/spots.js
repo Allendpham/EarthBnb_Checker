@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 //Action Constants
 const GET_ALL_SPOTS = 'spots/getAllSpots';
 const ADD_A_SPOT = 'spots/addASpot';
+const REMOVE_A_SPOT = 'spots/removeASpot';
 
 //Action Creators
 const loadSpots = (spots) => {
@@ -19,6 +20,12 @@ const addSpot = (spot) => {
    }
 }
 
+const removeSpot = (spotId) => {
+   return {
+      type: REMOVE_A_SPOT,
+      spotId
+   }
+}
 
 //Thunk Action Creators
 export const getAllSpots = () => async (dispatch) => {
@@ -59,6 +66,16 @@ export const actionEditASpot = (payload, id) => async (dispatch) => {
    }
 };
 
+export const actionRemoveASpot = (id) => async (dispatch) => {
+   const response = await csrfFetch(`/api/spots/${id}`, {
+      method: 'DELETE'
+   });
+
+   if(response.ok) {
+      dispatch(removeSpot(id));
+   }
+}
+
 //spotsReducer
 const initialState = {allSpots: {}};
 const spotsReducer = (state = initialState, action) => {
@@ -73,6 +90,12 @@ const spotsReducer = (state = initialState, action) => {
          const addState = {...state, allSpots: {...state.allSpots}};
          addState.allSpots[action.spot.id] = action.spot;
          return addState;
+      }
+
+      case REMOVE_A_SPOT: {
+         const remState = {...state, allSpots: {...state.allSpots}};
+         delete remState.allSpots[action.spotId];
+         return remState;
       }
 
       default:
