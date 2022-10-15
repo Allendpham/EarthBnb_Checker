@@ -19,6 +19,7 @@ const addSpot = (spot) => {
    }
 }
 
+
 //Thunk Action Creators
 export const getAllSpots = () => async (dispatch) => {
    const response = await csrfFetch('/api/spots');
@@ -44,9 +45,22 @@ export const actionAddSpot = (payload) => async (dispatch) => {
    }
 };
 
+export const actionEditASpot = (payload, id) => async (dispatch) => {
+   const response = await csrfFetch(`/api/spots/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+   });
 
-const initialState = {allSpots: {}};
+   if(response.ok){
+      const data = await response.json();
+      dispatch(addSpot(data));
+      return response;
+   }
+};
+
 //spotsReducer
+const initialState = {allSpots: {}};
 const spotsReducer = (state = initialState, action) => {
    switch(action.type){
       case GET_ALL_SPOTS: {
@@ -57,7 +71,6 @@ const spotsReducer = (state = initialState, action) => {
 
       case ADD_A_SPOT: {
          const addState = {...state, allSpots: {...state.allSpots}};
-         console.log("This is a spot",action.spot);
          addState.allSpots[action.spot.id] = action.spot;
          return addState;
       }

@@ -1,21 +1,26 @@
 import {useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { actionAddSpot } from '../../store/spots';
+import { actionEditASpot } from '../../store/spots';
 
-const CreateSpotForm = () => {
+const EditSpotForm = () => {
    const dispatch = useDispatch();
    const history = useHistory();
+   const {spotId} = useParams();
    const sessionUser = useSelector((state) => state.session.user);
-   const [address, setAddress] = useState("");
-   const [city, setCity] = useState("");
-   const [state, setState] = useState("");
-   const [country, setCountry] = useState("");
-   const [lat, setLat] = useState(0);
-   const [lng, setLng] = useState(0);
-   const [name, setName] = useState("");
-   const [description, setDescription] = useState("");
-   const [price, setPrice] = useState(0);
+   const spotsObj = useSelector(state => state.spots.allSpots);
+
+   const chosenSpot = spotsObj[spotId];
+
+   const [address, setAddress] = useState(chosenSpot.address);
+   const [city, setCity] = useState(chosenSpot.city);
+   const [state, setState] = useState(chosenSpot.state);
+   const [country, setCountry] = useState(chosenSpot.country);
+   const [lat, setLat] = useState(chosenSpot.lat);
+   const [lng, setLng] = useState(chosenSpot.lng);
+   const [name, setName] = useState(chosenSpot.name);
+   const [description, setDescription] = useState(chosenSpot.description);
+   const [price, setPrice] = useState(chosenSpot.price);
    const [errors, setErrors] = useState([]);
 
 
@@ -37,13 +42,13 @@ const CreateSpotForm = () => {
          price
       };
 
-      let createdSpot =  dispatch(actionAddSpot(payload))
+      let edittedSpot =  dispatch(actionEditASpot(payload, chosenSpot.id))
                            .catch(async (res) => {
                               const data = await res.json();
                               if (data && data.errors) setErrors(data.errors);
                            });
-      if (createdSpot && !errors.length) {
-         history.push('/');
+      if (edittedSpot && !errors.length) {
+         history.push('/account');
       }
    }
 
@@ -144,9 +149,9 @@ const CreateSpotForm = () => {
             />
          </label>
 
-         <button type="submit">Create Spot</button>
+         <button type="submit">Edit Spot</button>
       </form>
    );
 }
 
-export default CreateSpotForm;
+export default EditSpotForm;
