@@ -1,17 +1,52 @@
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-// ? useDispatch to dispatch an action to get one Spot?
+import { useEffect } from 'react';
+import { useParams, NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { actionGetOneSpot } from "../../store/spots";
+import { actionGetReviewsOfSpot } from '../../store/reviews';
+import ReviewItem from '../ReviewItem';
 
 const SpotShow = () => {
+   const dispatch = useDispatch();
    const {spotId} = useParams();
-   const allSpotsObj = useSelector(state => state.allSpots);
+   const singleSpot = useSelector(state => state.spots.singleSpot);
+   const spotReviewsArr = useSelector(state => Object.values(state.reviews.spot));
+   const sessionUser = useSelector(state => state.session.user);
 
-   const individualSpot = allSpotsObj[spotId];
+   useEffect(() => {
+      dispatch(actionGetOneSpot(parseInt(spotId)));
+      dispatch(actionGetReviewsOfSpot(parseInt(spotId)));
+   }, [dispatch, spotId])
+
+
+   if(!singleSpot || !spotReviewsArr) return null;
+
+   //There must be a currently logged in user to create a review
+   //AND
+   //Current Session User cannot be the owner of the spot
+   //AND
+   //Currently does not have a review for that given spot
+   let allowCreate = false;
+   if(sessionUser){
+      let ownedReview = spotReviewsArr.find((review) => review.userId === sessionUser.id)
+      if((sessionUser.id !== singleSpot.ownerId) && !ownedReview) allowCreate = true;
+   }
+
+
 
    return (
       <div className='spot-show-wrapper'>
-         <h1>Hello from SpotShow {individualSpot.address}</h1>
+         <h1>Hello from SpotShow</h1>
+         <h2>{singleSpot?.name}</h2>
+         <p>{singleSpot.description}</p>
+         <h2>Reviews</h2>
+            {allowCreate &&
+               <NavLink to={`/spots/${spotId}/reviews/new`}>Leave a Review</NavLink>
+            }
+         <ul className='review-list'>
+            {spotReviewsArr?.map(review => (
+               <li key={review.id}><ReviewItem review={review}/></li>
+            ))}
+         </ul>
       </div>
    );
 }

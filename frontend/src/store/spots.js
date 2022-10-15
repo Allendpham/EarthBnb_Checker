@@ -4,6 +4,7 @@ import { csrfFetch } from "./csrf";
 const GET_ALL_SPOTS = 'spots/getAllSpots';
 const ADD_A_SPOT = 'spots/addASpot';
 const REMOVE_A_SPOT = 'spots/removeASpot';
+const GET_ONE_SPOT = 'spots/getOneSpot';
 
 //Action Creators
 const loadSpots = (spots) => {
@@ -24,6 +25,13 @@ const removeSpot = (spotId) => {
    return {
       type: REMOVE_A_SPOT,
       spotId
+   }
+}
+
+const getOneSpot = (spot) => {
+   return {
+      type: GET_ONE_SPOT,
+      spot
    }
 }
 
@@ -76,8 +84,18 @@ export const actionRemoveASpot = (id) => async (dispatch) => {
    }
 }
 
+export const actionGetOneSpot = (id) => async (dispatch) => {
+   const response = await csrfFetch(`/api/spots/${id}`);
+
+   if(response.ok){
+      const singleSpot = await response.json();
+      dispatch(getOneSpot(singleSpot));
+      return response;
+   }
+}
+
 //spotsReducer
-const initialState = {allSpots: {}};
+const initialState = {allSpots: {}, singleSpot: {}};
 const spotsReducer = (state = initialState, action) => {
    switch(action.type){
       case GET_ALL_SPOTS: {
@@ -96,6 +114,12 @@ const spotsReducer = (state = initialState, action) => {
          const remState = {...state, allSpots: {...state.allSpots}};
          delete remState.allSpots[action.spotId];
          return remState;
+      }
+
+      case GET_ONE_SPOT: {
+         const oneState = {...state, allSpots: {...state.allSpots}};
+         oneState.singleSpot = action.spot;
+         return oneState;
       }
 
       default:

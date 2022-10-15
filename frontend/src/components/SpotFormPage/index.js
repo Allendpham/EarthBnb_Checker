@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import {useHistory, Link} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionAddSpot } from '../../store/spots';
 
@@ -17,10 +17,6 @@ const CreateSpotForm = () => {
    const [description, setDescription] = useState("");
    const [price, setPrice] = useState(0);
    const [errors, setErrors] = useState([]);
-
-
-   //if no session user/not logged in redirect to log in page?
-   //or remove the host a spot button when no user is logged in?
 
    const handleSubmit = (e) => {
       e.preventDefault();
@@ -43,7 +39,7 @@ const CreateSpotForm = () => {
                               if (data && data.errors) setErrors(data.errors);
                            });
       if (createdSpot && !errors.length) {
-         history.push('/');
+         history.push(`/account`);
       }
    }
 
@@ -51,6 +47,7 @@ const CreateSpotForm = () => {
    return (
       <form className='spot-form-wrapper' onSubmit={handleSubmit}>
          <h2>Create a Spot</h2>
+         {!sessionUser && <span>Please login or signup to host a spot.</span>}
          <ul>
             {errors.map((error, idx) => <li key={idx}>{error}</li>)}
          </ul>
@@ -144,7 +141,7 @@ const CreateSpotForm = () => {
             />
          </label>
 
-         <button type="submit">Create Spot</button>
+         <button type="submit" disabled={sessionUser? false: true}>Create Spot</button>
       </form>
    );
 }
