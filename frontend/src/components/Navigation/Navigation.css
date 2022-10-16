@@ -1,0 +1,170 @@
+.home-logo {
+   height: 60px;
+   width: 145px;
+}
+
+.nav-bar {
+   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+   margin: 0px;
+}
+
+.nav-list {
+   position: relative;
+   list-style: none;
+   display: flex;
+   justify-content: space-between;
+   height: 80px;
+   margin: 0px;
+   padding: 0 40px;
+   align-items: center;
+   box-sizing: border-box;
+}
+
+.right-nav-items {
+   display: flex;
+   align-items: center;
+}
+
+.host-a-spot{
+   position: relative;
+   font-size: 14px;
+   text-decoration: none;
+   color: black;
+   font-weight: 600;
+   line-height: 18px;
+   height: 42px;
+   box-sizing: border-box;
+   padding: 12px;
+   border-radius: 25px;
+   font-weight: bold;
+   letter-spacing: 0.5px;
+}
+
+.host-a-spot:hover {
+   background-color: rgba(0, 0, 0, 0.03);
+}
+
+.profile-button {
+   position: relative;
+   height: 42px;
+   width: 77px;
+   background-color: white;
+   border: 1px solid rgba(0, 0, 0, 0.1);
+   border-radius: 25px;
+   display: flex;
+   align-items: center;
+}
+
+.profile-button:hover {
+   cursor: pointer;
+   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
+}
+
+.fas.fa-bars {
+   line-height: 16px;
+   padding-left: 5px;
+   padding-right: 15px;
+   font-size: 14px;
+}
+
+.fas.fa-user-circle {
+   font-size: 30px;
+   color: rgba(0, 0, 0, 0.5);
+}
+
+.profile-dropdown {
+   position: absolute;
+   right: 40px;
+   top: 70px;
+   width: 175px;
+   height: 150px;
+   list-style: none;
+   background-color: white;
+   border: 1px solid rgba(0, 0, 0, 0.1);
+   border-radius: 15px;
+   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+   display: flex;
+   flex-direction: column;
+   align-content: flex-start;
+   justify-content: space-between;
+   padding: 5px 0px 15px 0px;
+   font-size: 14px;
+   font-weight: 600;
+   color:rgba(0, 0, 0, 0.8);
+}
+
+.profile-dropdown li,
+.profile-dropdown-nouser li {
+   padding-left: 15px;
+   line-height: 40px;
+}
+
+.profile-dropdown-nouser li:hover {
+   cursor: pointer;
+   background-color: rgba(0, 0, 0, 0.03);
+}
+
+.login-button:hover {
+   cursor: pointer;
+}
+
+.dropdown-button:hover {
+   background-color: rgba(0, 0, 0, 0.03);
+   cursor: pointer;
+}
+
+.account-button {
+   color: black;
+   text-decoration: none;
+   font-weight: normal;
+}
+
+.dropdown-button.border {
+   border-top: 1px solid rgba(0, 0, 0, 0.1);
+   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.profile-dropdown-nouser {
+   position: absolute;
+   right: 40px;
+   top: 70px;
+   width: 175px;
+   height: 75px;
+   list-style: none;
+   background-color: white;
+   border: 1px solid rgba(0, 0, 0, 0.1);
+   border-radius: 15px;
+   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+   display: flex;
+   flex-direction: column;
+   align-content: flex-start;
+   justify-content: space-between;
+   padding: 5px 0px 15px 0px;
+   font-size: 14px;
+   font-weight: 600;
+   color:rgba(0, 0, 0, 0.8);
+}
+
+.login-button,
+.account-button,
+.logout-button {
+   background: none;
+   border: none;
+   font-family: "Helvetica";
+   font-size: 14px;
+   padding: 0px;
+   width: 160px;
+   height: 40px;
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+}
+
+.login-button {
+   font-weight: bold;
+}
+
+.dropdown-button:hover,
+.logout-button:hover {
+   cursor: pointer;
+}

@@ -1,10 +1,11 @@
 // frontend/src/components/Navigation/ProfileButton.js
 import React, { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux';
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import * as sessionActions from '../../store/session';
+import LoginFormModal from "../LoginFormModal";
 
-function ProfileButton({ user }) {
+function NoUserProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
 
@@ -25,12 +26,6 @@ function ProfileButton({ user }) {
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
-  const logout = (e) => {
-    e.preventDefault();
-    dispatch(sessionActions.logout());
-    window.alert("Successfully Logged Out")
-  };
-
   return (
     <>
       <button onClick={openMenu} className="profile-button">
@@ -38,19 +33,19 @@ function ProfileButton({ user }) {
         <i className="fas fa-user-circle" />
       </button>
       {showMenu && (
-        <ul className="profile-dropdown">
-          <li>{user.username}</li>
-          <li>{user.email}</li>
-          <li className="dropdown-button border">
-            <Link className='account-button' to='/account'>Account</Link>
-          </li>
-          <li className="dropdown-button">
-            <button className='logout-button' onClick={logout}>Log Out</button>
-          </li>
+        <ul className="profile-dropdown-nouser">
+         <li>
+         <LoginFormModal />
+         </li>
+
+         <li>
+            <NavLink className="account-button" to="/signup">Sign Up</NavLink>
+         </li>
+
         </ul>
       )}
     </>
   );
 }
 
-export default ProfileButton;
+export default NoUserProfileButton;
