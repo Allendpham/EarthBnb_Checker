@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Link, NavLink } from "react-router-dom";
 import * as sessionActions from '../../store/session';
 import LoginFormModal from "../LoginFormModal";
+import SignUpFormModal from "../SignupFormPage/SignUpFormModal";
 
 function NoUserProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -39,7 +40,8 @@ function NoUserProfileButton({ user }) {
          </li>
 
          <li>
-            <NavLink className="account-button" to="/signup">Sign Up</NavLink>
+            {/* <NavLink className="account-button" to="/signup">Sign Up</NavLink> */}
+            <SignUpFormModal />
          </li>
 
         </ul>
