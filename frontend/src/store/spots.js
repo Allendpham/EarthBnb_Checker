@@ -120,7 +120,7 @@ const initialState = {allSpots: {}, singleSpot: {}};
 const spotsReducer = (state = initialState, action) => {
    switch(action.type){
       case GET_ALL_SPOTS: {
-         const newState = {...state, allSpots: {...state.allSpots}};
+         const newState = {...state, allSpots: {...state.allSpots}, singleSpot: {...state.singleSpot}};
          action.spots.Spots.forEach((spot) => (newState.allSpots[spot.id] = spot));
          return newState;
       }
@@ -138,13 +138,13 @@ const spotsReducer = (state = initialState, action) => {
       }
 
       case GET_ONE_SPOT: {
-         const oneState = {...state, allSpots: {...state.allSpots}};
+         const oneState = {...state, allSpots: {...state.allSpots}, singleSpot: {...state.singleSpot}};
          oneState.singleSpot = action.spot;
          return oneState;
       }
 
       case ADD_IMAGE_URL: {
-         const imgState = {...state, allSpots: {...state.allSpots}};
+         const imgState = {...state, allSpots: {...state.allSpots}, singleSpot: {...state.singleSpot}};
          imgState.allSpots[action.spotId].previewImage = action.url;
          return imgState;
       }

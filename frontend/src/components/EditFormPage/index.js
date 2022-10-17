@@ -55,7 +55,7 @@ const EditSpotForm = () => {
    //To-do: adjust / implement formType as prop
    return (
       <form className='spot-form-wrapper' onSubmit={handleSubmit}>
-         <h2>Create a Spot</h2>
+         <h2>Edit Your Spot</h2>
          <ul>
             {errors.map((error, idx) => <li key={idx}>{error}</li>)}
          </ul>

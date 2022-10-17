@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllSpots } from '../../store/spots';
+import { getAllSpots, actionGetOneSpot } from '../../store/spots';
 import { NavLink } from 'react-router-dom';
 import SpotItem from '../SpotItem';
 import './index.css';
@@ -19,11 +19,9 @@ function AllSpots(){
          <ul className='all-spots-wrapper'>
             {spotList?.map(spot => (
                <li key={spot.id}>
-                  {/* <NavLink key={spot.id} to={`/spots/${spot.id}`}>{spot.name}</NavLink> */}
-                  {/* Create individual spot card component? SpotItem*/}
                   <SpotItem key={spot.id} spot={spot}/>
                </li>
-
+               // onClick of the link dispatch the action to getOneSpot?
             ))
             }
          </ul>

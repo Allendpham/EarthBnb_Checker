@@ -1,20 +1,38 @@
+import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { actionDeleteAReview } from "../../store/reviews";
+import './index.css';
 
 const ReviewItem = ({review}) => {
-   const dispatch = useDispatch();
    const sessionUser = useSelector(state => state.session.user);
    let ownerOfReview = false;
    if(sessionUser){
       if(review.userId === sessionUser.id) ownerOfReview = true;
    }
 
+   const displayStars = (int) => {
+      let arr = [];
+      for(let i = 0; i < int; i++) {
+         arr.push("★");
+      };
+      return arr.join(" ");
+   }
+
+   //Parse createdAt Date
+   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+   const createdAt = new Date(review?.createdAt);
+   const month = months[createdAt.getMonth()];
+   const year = createdAt.getFullYear();
+
    return (
       <div className='review-item'>
-         {review.review}
-         {ownerOfReview &&
-            <button onClick={() => dispatch(actionDeleteAReview(review.id))}>Delete</button>
-         }
+         <div className='top-review-item'>
+            <div className='review-item-name'>{review?.User?.firstName}</div>
+            <div className='review-item-date'>{month} {year}</div>
+         </div>
+         <div className='review-item-stars'>
+            {displayStars(review?.stars)}
+         </div>
+         {review?.review}
       </div>
    );
 }

@@ -1,0 +1,60 @@
+.review-form-wrapper {
+   display: flex;
+   flex-direction: column;
+   align-content: center;
+   justify-items: center;
+   align-items: center;
+   width: 520px;
+   height: auto;
+   margin: auto;
+}
+
+.review-form-header {
+   padding-bottom: 5px;
+   margin-bottom: 0;
+   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+   width: 520px;
+   display: flex;
+   justify-content: center;
+}
+
+.review-form-wrapper button {
+   width: 520px;
+   height: 48px;
+   border-radius: 10px;
+   margin-bottom: 15px;
+   color: white;
+   background-color: rgba(220, 16, 98);
+   border: none;
+   font-size: 16px;
+}
+
+.review-form-wrapper textarea {
+   width: 505px;
+   height: 52px;
+   border: 1px solid rgba(0, 0, 0, 0.4);
+   border-radius: 10px;
+   font-family: 'Helvetica';
+   font-size: 16px;
+   font-weight: 400;
+   margin-bottom: 15px;
+   padding-left: 15px;
+   resize: none;
+}
+
+.review-form-wrapper button:hover {
+   cursor: pointer;
+}
+
+.star-radio-buttons {
+   margin-bottom: 15px;
+}
+
+.star-radio-buttons input:hover {
+   cursor: pointer;
+}
+
+.star-radio-buttons label {
+   font-size: 18px;
+   padding-right: 7px;
+}

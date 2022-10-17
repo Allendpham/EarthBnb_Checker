@@ -1,0 +1,15 @@
+.review-wrapper {
+   margin-bottom: 25px;
+}
+
+.review-item-date {
+   font-size: 14px;
+}
+
+.review-item-name {
+   font-weight: 600;
+}
+
+.top-review-item {
+   margin-bottom: 5px;
+}
