@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 
 const SpotCard= ({spot}) => {
 
@@ -13,10 +14,10 @@ const SpotCard= ({spot}) => {
             <div className="spot-card-bottom-left">
                <div>
                   <span className="spot-card-location">{spot.city}, {spot.state}</span>
-               </div>
                <div className="spot-card-description">
-                  {spot.description}
+                  {spot.name}
                </div>
+            </div>
                <div className="spot-card-price-wrapper">
                   <span className='spot-card-price'>${spot.price}</span> per night
                </div>

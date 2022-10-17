@@ -11,7 +11,9 @@
    text-decoration: none;
    line-height: 23px;
    display: flex;
+   justify-content: space-between;
    padding-top: 10px;
+   height: 100%;
 }
 
 .spot-links{
@@ -21,4 +23,11 @@
 .spot-card-bottom-left {
    display: flex;
    flex-direction: column;
+   justify-content: space-between;
+}
+
+.spot-links {
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
 }
