@@ -1,14 +1,61 @@
 .login-form-wrapper{
    display: flex;
    flex-direction: column;
+   justify-items: center;
    align-items: center;
-   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-   padding-bottom: 5px;
-   width: auto;
-   margin-left: 25%;
-   margin-right: 25%;
+   width: 520px;
+   height: 375px;
+   padding: 0 24px 24px 24px;
 }
 
 .login-form-wrapper input {
-   margin: 5px;
+   width: 505px;
+   height: 52px;
+   border: 1px solid rgba(0, 0, 0, 0.4);
+   border-radius: 10px;
+   font-family: 'Helvetica';
+   font-size: 16px;
+   font-weight: 400;
+}
+
+.login-form-wrapper h2 {
+   width: 100%;
+   justify-self: flex-start;
+   margin-bottom: 0px;
+   margin-top: 24px;
+   font-size: 22px;
+}
+
+.login-form-header {
+   display: flex;
+   justify-content: center;
+   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#modal-content {
+   border-radius: 10px;
+}
+
+.password-input {
+   margin: 15px 0px;
+   padding-left: 15px;
+}
+
+.username-email-input {
+   padding-left: 15px;
+}
+
+.login-form-wrapper button {
+   width: 520px;
+   height: 48px;
+   border-radius: 10px;
+   margin-bottom: 15px;
+   color: white;
+   background-color: rgba(220, 16, 98);
+   border: none;
+   font-size: 16px;
+}
+
+.login-form-wrapper button:hover {
+   cursor: pointer;
 }

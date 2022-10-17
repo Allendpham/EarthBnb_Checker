@@ -1,0 +1,48 @@
+.spot-form-wrapper {
+   display: flex;
+   flex-direction: column;
+   align-content: center;
+   justify-items: center;
+   align-items: center;
+   width: 520px;
+   height: auto;
+   margin: auto;
+}
+
+.spot-form-wrapper h2 {
+   padding-bottom: 5px;
+   margin-bottom: 0;
+   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+   width: 520px;
+   display: flex;
+   justify-content: center;
+}
+
+.spot-form-wrapper button {
+   width: 520px;
+   height: 48px;
+   border-radius: 10px;
+   margin-bottom: 15px;
+   color: white;
+   background-color: rgba(220, 16, 98);
+   border: none;
+   font-size: 16px;
+}
+
+.spot-form-wrapper input,
+.spot-form-wrapper textarea {
+   width: 505px;
+   height: 52px;
+   border: 1px solid rgba(0, 0, 0, 0.4);
+   border-radius: 10px;
+   font-family: 'Helvetica';
+   font-size: 16px;
+   font-weight: 400;
+   margin-bottom: 15px;
+   padding-left: 15px;
+}
+
+.spot-form-wrapper button:hover {
+   cursor: pointer;
+}
+

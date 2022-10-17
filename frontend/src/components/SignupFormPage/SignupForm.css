@@ -1,3 +1,57 @@
 .account-button:hover{
    cursor: pointer;
 }
+
+.signup-form-wrapper {
+   display: flex;
+   flex-direction: column;
+   justify-items: center;
+   align-items: center;
+   width: 520px;
+   height: 550px;
+   padding: 0 24px 24px 24px;
+}
+
+.signup-form-wrapper input {
+   width: 505px;
+   height: 52px;
+   border: 1px solid rgba(0, 0, 0, 0.4);
+   border-radius: 10px;
+   font-family: 'Helvetica';
+   font-size: 16px;
+   font-weight: 400;
+}
+
+.signup-form-wrapper h2 {
+   width: 100%;
+   justify-self: flex-start;
+   margin-bottom: 0px;
+   margin-top: 24px;
+   font-size: 22px;
+}
+
+.signup-form-header {
+   display: flex;
+   justify-content: center;
+   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.signup-form-wrapper input {
+   padding-left: 15px;
+   margin-bottom: 10px;
+}
+
+.signup-form-wrapper button {
+   width: 520px;
+   height: 48px;
+   border-radius: 10px;
+   margin-bottom: 15px;
+   color: white;
+   background-color: rgba(220, 16, 98);
+   border: none;
+   font-size: 16px;
+}
+
+.signup-form-wrapper button:hover {
+   cursor: pointer;
+}

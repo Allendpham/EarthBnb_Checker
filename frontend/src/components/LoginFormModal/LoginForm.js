@@ -28,27 +28,34 @@ function LoginForm () {
     }
 
     return (
+      <div className='login-modal'>
+        <div className="login-form-header">
+          <h3>Log In</h3>
+        </div>
       <form onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}
          className='login-form-wrapper'>
+          <h2>Welcome to Earthbnb</h2>
         <ul>
           {errors.map((error, idx) => <li key={idx}>{error}</li>)}
         </ul>
         <label>
-          Username or Email
           <input
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
+            placeholder="Username or Email"
             required
+            className='username-email-input'
           />
         </label>
         <label>
-          Password
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
             required
+            className='password-input'
           />
         </label>
         <button type="submit">Log In</button>
@@ -61,6 +68,8 @@ function LoginForm () {
           Demo User
           </button>
       </form>
+      </div>
+
     );
 }
 
