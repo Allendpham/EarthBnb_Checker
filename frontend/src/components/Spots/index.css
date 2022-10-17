@@ -1,0 +1,32 @@
+.all-spots-wrapper {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+   /* grid-auto-flow: row dense; */
+   /* grid-auto-rows: repeat(auto-fill, minmax(0, 1fr)); */
+
+   grid-gap: 40px 24px;
+   list-style: none;
+   padding: 0px;
+   justify-items: center;
+}
+
+.all-spots-div {
+   overflow: hidden;
+   display: block;
+   margin: 16px 0 40px 0;
+   padding: 0 40px;
+}
+
+.spot-card-price-wrapper {
+   padding-top: 7px;
+}
+
+.spot-card-price,
+.spot-card-location {
+   font-weight: bold;
+}
+
+.spot-card-description {
+   color: rgba(0, 0, 0, 0.5)
+}
+

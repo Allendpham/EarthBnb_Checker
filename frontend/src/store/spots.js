@@ -5,6 +5,7 @@ const GET_ALL_SPOTS = 'spots/getAllSpots';
 const ADD_A_SPOT = 'spots/addASpot';
 const REMOVE_A_SPOT = 'spots/removeASpot';
 const GET_ONE_SPOT = 'spots/getOneSpot';
+const ADD_IMAGE_URL = 'spots/addImageUrl';
 
 //Action Creators
 const loadSpots = (spots) => {
@@ -35,6 +36,14 @@ const getOneSpot = (spot) => {
    }
 }
 
+const addImageUrl = (spotId, url) => {
+   return {
+      type: ADD_IMAGE_URL,
+      spotId,
+      url
+   }
+}
+
 //Thunk Action Creators
 export const getAllSpots = () => async (dispatch) => {
    const response = await csrfFetch('/api/spots');
@@ -56,7 +65,7 @@ export const actionAddSpot = (payload) => async (dispatch) => {
    if (response.ok) {
       const data = await response.json();
       dispatch(addSpot(data));
-      return response;
+      return data;
    }
 };
 
@@ -94,6 +103,18 @@ export const actionGetOneSpot = (id) => async (dispatch) => {
    }
 }
 
+export const actionAddImageUrl = (payload ,id) => async (dispatch) => {
+   const response = await csrfFetch(`/api/spots/${id}/images`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+   });
+   if(response.ok){
+      const data = await response.json();
+      dispatch(addImageUrl(id, payload));
+   }
+}
+
 //spotsReducer
 const initialState = {allSpots: {}, singleSpot: {}};
 const spotsReducer = (state = initialState, action) => {
@@ -111,7 +132,7 @@ const spotsReducer = (state = initialState, action) => {
       }
 
       case REMOVE_A_SPOT: {
-         const remState = {...state, allSpots: {...state.allSpots}};
+         const remState = {...state, allSpots: {...state.allSpots}, singleSpot: {...state.singleSpot}};
          delete remState.allSpots[action.spotId];
          return remState;
       }
@@ -120,6 +141,12 @@ const spotsReducer = (state = initialState, action) => {
          const oneState = {...state, allSpots: {...state.allSpots}};
          oneState.singleSpot = action.spot;
          return oneState;
+      }
+
+      case ADD_IMAGE_URL: {
+         const imgState = {...state, allSpots: {...state.allSpots}};
+         imgState.allSpots[action.spotId].previewImage = action.url;
+         return imgState;
       }
 
       default:

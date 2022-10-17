@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {useHistory, Link} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { actionAddSpot } from '../../store/spots';
+import { actionAddSpot, actionAddImageUrl } from '../../store/spots';
 
 const CreateSpotForm = () => {
    const dispatch = useDispatch();
@@ -16,9 +16,10 @@ const CreateSpotForm = () => {
    const [name, setName] = useState("");
    const [description, setDescription] = useState("");
    const [price, setPrice] = useState(0);
+   const [imgUrl, setImgUrl] = useState("");
    const [errors, setErrors] = useState([]);
 
-   const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
       e.preventDefault();
 
       const payload = {
@@ -33,11 +34,18 @@ const CreateSpotForm = () => {
          price
       };
 
-      let createdSpot =  dispatch(actionAddSpot(payload))
+      const imgPayload = {
+         url: imgUrl,
+         preview: true
+      }
+
+      let createdSpot =  await dispatch(actionAddSpot(payload))
                            .catch(async (res) => {
                               const data = await res.json();
                               if (data && data.errors) setErrors(data.errors);
-                           });
+                           })
+      dispatch(actionAddImageUrl(imgPayload, createdSpot.id));
+
       if (createdSpot && !errors.length) {
          history.push(`/account`);
       }
@@ -137,6 +145,16 @@ const CreateSpotForm = () => {
             type='number'
             value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
+            required
+            />
+         </label>
+
+         <label>
+            Preview Image URL
+            <input
+            type='text'
+            value={imgUrl}
+            onChange={(e) => setImgUrl(e.target.value)}
             required
             />
          </label>
