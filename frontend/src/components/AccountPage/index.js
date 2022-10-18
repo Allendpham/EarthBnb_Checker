@@ -4,6 +4,7 @@ import {Link, NavLink} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import {getAllSpots, actionRemoveASpot} from '../../store/spots';
 import { actionGetReviewsOfUser, actionDeleteAReview } from '../../store/reviews';
+import './index.css';
 
 function AccountPage (){
    const dispatch = useDispatch();
@@ -16,31 +17,83 @@ function AccountPage (){
       dispatch(actionGetReviewsOfUser());
    }, [dispatch])
 
-   const ownedSpots = spotsArr.filter((spot) => spot.ownerId === sessionUser.id);
+   const ownedSpots = spotsArr?.filter((spot) => spot.ownerId === sessionUser.id);
+
+   //Helper Function to Parse Review Dates
+   const createDate = (createdAt) => {
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+      const date = new Date(createdAt);
+      const month = months[date.getMonth()];
+      const year = date.getFullYear();
+
+      return [month, year];
+   }
+
+   const displayStars = (int) => {
+      let arr = [];
+      for(let i = 0; i < int; i++) {
+         arr.push("★");
+      };
+      return arr.join(" ");
+   }
 
    return (
-      <div className='account-page-wrapper'>
-         <h1>Hello {sessionUser.username}</h1>
-         <h2>Owned Spots</h2>
-         <ul>
-            {ownedSpots?.map((spot) => (
-               <li key={spot.id}>
-                  <NavLink key={spot.id} to={`/spots/${spot.id}`}>{spot.name}</NavLink>
-                  <Link to={`/spots/${spot.id}/edit`}>Edit</Link>
-                  <button onClick={() => dispatch(actionRemoveASpot(spot.id))}>Delete</button>
-               </li>
-            ))}
-         </ul>
 
-         <h2>Your Reviews</h2>
-         <ul>
-            {userReviewsArr.map((review) => (
-               <li key={review.id}>{review.review}{review.stars}
-                  <button onClick={() => dispatch(actionDeleteAReview(review.id))}>Delete</button>
-               </li>
-            ))}
-         </ul>
+      <div className='account-page-wrapper'>
+         <div className='account-page-module'>
+            <ul className='user-info'>
+               <li><div>Username</div>{sessionUser?.username}</li>
+               <li><div>Email</div>{sessionUser?.email}</li>
+               <li><div>First Name</div>{sessionUser?.firstName}</li>
+               <li><div>Last Name</div>{sessionUser?.lastName}</li>
+            </ul>
+         </div>
+
+         <div className='account-page-info-wrapper'>
+            <h1>Hi, {sessionUser?.firstName}</h1>
+            <h2>Manage Your Spots</h2>
+            <ul>
+               {ownedSpots?.map((spot) => (
+                  <li className='spot-list-item' key={spot.id}>
+                     <NavLink className="link" key={spot.id} to={`/spots/${spot.id}`}><img className='account-spot-image' src={spot.previewImage} alt='SpotImage'/></NavLink>
+
+                     <div className='spot-info'>
+                        <div className="spot-name">{spot.name}</div>
+                        <div>{spot.city}, {spot.state}</div>
+                        ${spot.price} per night
+                     </div>
+
+                     <div className='manage-spot-buttons'>
+                        <Link className="edit-link" to={`/spots/${spot.id}/edit`}>Edit</Link>
+                        <button className='delete-button' onClick={() => dispatch(actionRemoveASpot(spot.id))}>Delete</button>
+                     </div>
+                  </li>
+               ))}
+            </ul>
+
+            <h2>Manage Your Reviews</h2>
+            <ul>
+               {userReviewsArr?.map((review) => (
+                  <li className='review-item' key={review.id}>
+                     <div className='top-review-item'>
+                        <div className='review-item-name'>
+                           <NavLink className='review-link' key={review?.Spot?.id} to={`/spots/${review?.Spot?.id}`}>{review?.Spot?.name}</NavLink>
+                        </div>
+                        <div className='review-item-date'>{createDate(review?.createdAt)[0]} {createDate(review?.createdAt)[1]}</div>
+                        <div className='review-item-date'>{review?.Spot?.city}, {review?.Spot?.state}</div>
+                     </div>
+                     <div className='review-item-stars'>{displayStars(review?.stars)}</div>
+                     {review?.review}
+                     <div>
+                        <button className='review-delete-button' onClick={() => dispatch(actionDeleteAReview(review.id))}>Delete</button>
+                     </div>
+                  </li>
+               ))}
+            </ul>
+         </div>
       </div>
+
    );
 };
 
