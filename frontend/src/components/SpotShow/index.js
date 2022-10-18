@@ -32,8 +32,8 @@ const SpotShow = () => {
    let ratingArr = singleSpot?.avgStarRating?.toString().split('');
 
    if(singleSpot?.avgStarRating === 0) displayRating = "No Current Reviews";
-   else if(Number.isInteger(singleSpot?.avgStarRating)) displayRating = `${singleSpot?.avgStarRating}.0`;
-   else if(ratingArr.slice(2).length === 1) displayRating = singleSpot?.avgStarRating.toFixed(1);
+   else if(Number.isInteger(singleSpot?.avgStarRating)) displayRating = `${Number(singleSpot?.avgStarRating)}.0`;
+   else if(ratingArr.slice(2).length === 1) displayRating = singleSpot?.avgStarRating.toString();
    else displayRating = parseFloat(singleSpot?.avgStarRating).toFixed(2);
 
    //There must be a currently logged in user to create a review
