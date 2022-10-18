@@ -32,7 +32,7 @@ const ReviewItem = ({review}) => {
          <div className='review-item-stars'>
             {displayStars(review?.stars)}
          </div>
-         {review?.review}
+         <div className='review'>{review?.review}</div>
       </div>
    );
 }

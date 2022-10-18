@@ -10,14 +10,15 @@ import './index.css';
 const SpotItem = ({ spot }) => {
    const dispatch = useDispatch();
 
-   const runDispatches = async (spotId) => {
+   const runDispatches = (spotId) => {
       dispatch(actionGetOneSpot(spotId));
       dispatch(actionGetReviewsOfSpot(spotId))
    }
 
+   //onClick={ () => runDispatches(spot.id)}
    return (
       <div className='spot-item-wrapper'>
-         <Link onClick={ async () => await runDispatches(spot.id)} className="spot-links" to={`/spots/${spot.id}`}><SpotCard spot={spot} /></Link>
+         <Link className="spot-links" to={`/spots/${spot.id}`}><SpotCard spot={spot} /></Link>
       </div>
    );
 };

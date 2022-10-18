@@ -20,13 +20,13 @@ const SpotShow = () => {
    //Or Use persist package
 
    useEffect(() => {
-      dispatch(getAllSpots());
+      // dispatch(getAllSpots());
       dispatch(actionGetOneSpot(parseInt(spotId)));
       dispatch(actionGetReviewsOfSpot(parseInt(spotId)));
    }, [dispatch, spotId])
 
 
-   if(!singleSpot || !spotReviewsArr) return null;
+   if(!Object.keys(singleSpot).length || !spotReviewsArr) return null;
 
    let displayRating;
    if(chosenSpot?.avgRating === 0) displayRating = "No Current Reviews";
