@@ -8,7 +8,7 @@
    justify-items: center;
    align-items: center;
    width: 520px;
-   height: 550px;
+   height: 575px;
    padding: 0 24px 24px 24px;
 }
 
@@ -54,4 +54,14 @@
 
 .signup-form-wrapper button:hover {
    cursor: pointer;
+}
+
+.no-spot-link {
+   color: black;
+}
+
+.no-spot-link:hover {
+   cursor: pointer;
+   font-weight: bolder;
+   color: rgba(220, 16, 98);
 }

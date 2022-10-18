@@ -38,6 +38,16 @@ function AccountPage (){
       return arr.join(" ");
    }
 
+   //UserReviewsArr && ownedSpots
+   //Display a default text if there are no owned spots
+   //Display a default text if there are no user reviews
+
+   let noOwnedSpots = false;
+   let noOwnedReviews = false;
+
+   if(ownedSpots.length === 0) noOwnedSpots = true;
+   if(noOwnedReviews.length === 0) noOwnedReviews = true;
+
    return (
 
       <div className='account-page-wrapper'>
@@ -53,6 +63,7 @@ function AccountPage (){
          <div className='account-page-info-wrapper'>
             <h1>Hi, {sessionUser?.firstName}</h1>
             <h2>Manage Your Spots</h2>
+            {ownedSpots.length < 1 && (<h4 className='no-owned'>You currently do not own any spots. Consider <NavLink className='no-spot-link' to='/spots/new'> Hosting a Spot! </NavLink></h4>)}
             <ul>
                {ownedSpots?.map((spot) => (
                   <li className='spot-list-item' key={spot.id}>
@@ -73,6 +84,7 @@ function AccountPage (){
             </ul>
 
             <h2>Manage Your Reviews</h2>
+            {userReviewsArr < 1 && <h4>You currently do not have any reviews.</h4>}
             <ul>
                {userReviewsArr?.map((review) => (
                   <li className='review-item' key={review.id}>
