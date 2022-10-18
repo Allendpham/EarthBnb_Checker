@@ -14,6 +14,11 @@ module.exports = {
         preview: false
       },
       {
+        spotId: 1,
+        url: 'https://i.imgur.com/eVyL7Cu.jpg',
+        preview: false
+      },
+      {
         spotId: 2,
         url: 'https://i.imgur.com/95OKWXQ.jpg',
         preview: true

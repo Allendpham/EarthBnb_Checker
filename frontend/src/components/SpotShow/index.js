@@ -63,7 +63,7 @@ const SpotShow = () => {
             <div className="other-images-grid">
                <ul>
                   {extraImagesArr?.map((image) => (
-                     <li key={image.id}><img src={image.url} alt="SecondarySpotImage"/></li>
+                     <li className='extra-pics' key={image.id}><img src={image.url} alt="SecondarySpotImage"/></li>
                   ))}
                </ul>
             </div>
