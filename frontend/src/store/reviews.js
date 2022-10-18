@@ -55,8 +55,9 @@ export const actionCreateAReview = (payload, spotId) => async (dispatch) => {
 
    if(response.ok){
       const data = await response.json();
+      console.log("this is the review data", data)
       dispatch(createAReview(data));
-      return response;
+      return data;
    }
 }
 

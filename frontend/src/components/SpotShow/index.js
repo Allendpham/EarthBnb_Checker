@@ -13,6 +13,10 @@ const SpotShow = () => {
    const spotReviewsArr = useSelector(state => Object.values(state.reviews.spot));
    const sessionUser = useSelector(state => state.session.user);
 
+   const allSpotsObj = useSelector(state => state.spots.allSpots);
+   const chosenSpot = allSpotsObj[spotId];
+
+
    useEffect(() => {
       // dispatch(getAllSpots());
       dispatch(actionGetOneSpot(parseInt(spotId)));
@@ -22,10 +26,15 @@ const SpotShow = () => {
 
    if(!Object.keys(singleSpot).length || !spotReviewsArr) return null;
 
+
+   //Code to handle avgRating
    let displayRating;
+   let ratingArr = singleSpot?.avgStarRating?.toString().split('');
+
    if(singleSpot?.avgStarRating === 0) displayRating = "No Current Reviews";
    else if(Number.isInteger(singleSpot?.avgStarRating)) displayRating = `${singleSpot?.avgStarRating}.0`;
-   else displayRating = singleSpot?.avgStarRating;
+   else if(ratingArr.slice(2).length === 1) displayRating = singleSpot?.avgStarRating.toFixed(1);
+   else displayRating = parseFloat(singleSpot?.avgStarRating).toFixed(2);
 
    //There must be a currently logged in user to create a review
    //AND
@@ -50,7 +59,7 @@ const SpotShow = () => {
                <span>{singleSpot?.city}, {singleSpot?.state}, {singleSpot?.country}</span>
             </div>
          </div>
-         
+
          <div className='img-wrapper'>
             <img className="main-img" src={singleSpot?.SpotImages[0].url} alt="SpotImage" />
 
@@ -111,7 +120,7 @@ const SpotShow = () => {
          <div className='review-wrapper'>
             <h3>★ {displayRating} · {singleSpot?.numReviews} reviews</h3>
             {allowCreate &&
-               <NavLink className='leave-a-review-link' to={`/spots/${spotId}/reviews/new`}>How was your stay? Leave a Review!</NavLink>
+               <NavLink className='leave-a-review-link' to={`/spots/${spotId}/reviews/new`}>Leave a Review!</NavLink>
             }
             <ul className='review-list'>
                {spotReviewsArr?.map(review => (

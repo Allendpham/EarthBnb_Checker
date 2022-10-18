@@ -3,9 +3,12 @@ import { useSelector } from "react-redux";
 const SpotCard= ({spot}) => {
 
    let displayRating;
+   let ratingArr = spot.avgRating.toString().split('');
+
    if(spot.avgRating === 0) displayRating = "No Current Reviews";
    else if(Number.isInteger(spot.avgRating)) displayRating = `${spot.avgRating}.0`;
-   else displayRating = spot.avgRating;
+   else if(ratingArr.slice(2).length === 1) displayRating = spot.avgRating;
+   else displayRating = parseFloat(spot.avgRating).toFixed(2);
 
    return (
       <div>
