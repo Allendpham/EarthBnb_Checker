@@ -13,12 +13,6 @@ const SpotShow = () => {
    const spotReviewsArr = useSelector(state => Object.values(state.reviews.spot));
    const sessionUser = useSelector(state => state.session.user);
 
-   const allSpotsObj = useSelector(state => state.spots.allSpots);
-   const chosenSpot = allSpotsObj[spotId];
-
-   //Use AllSpots to display base information?
-   //Or Use persist package
-
    useEffect(() => {
       // dispatch(getAllSpots());
       dispatch(actionGetOneSpot(parseInt(spotId)));
@@ -29,9 +23,9 @@ const SpotShow = () => {
    if(!Object.keys(singleSpot).length || !spotReviewsArr) return null;
 
    let displayRating;
-   if(chosenSpot?.avgRating === 0) displayRating = "No Current Reviews";
-   else if(Number.isInteger(chosenSpot?.avgRating)) displayRating = `${chosenSpot?.avgRating}.0`;
-   else displayRating = chosenSpot?.avgRating;
+   if(singleSpot?.avgStarRating === 0) displayRating = "No Current Reviews";
+   else if(Number.isInteger(singleSpot?.avgStarRating)) displayRating = `${singleSpot?.avgStarRating}.0`;
+   else displayRating = singleSpot?.avgStarRating;
 
    //There must be a currently logged in user to create a review
    //AND
@@ -49,16 +43,16 @@ const SpotShow = () => {
    return (
       <div className='spot-show-wrapper'>
          <div className='top-info'>
-            <h1>{chosenSpot?.name}</h1>
+            <h1>{singleSpot?.name}</h1>
             <div>
                <span>★ {displayRating} · </span>
                <span>{singleSpot?.numReviews} reviews · </span>
-               <span>{chosenSpot?.city}, {chosenSpot?.state}, {chosenSpot?.country}</span>
+               <span>{singleSpot?.city}, {singleSpot?.state}, {singleSpot?.country}</span>
             </div>
          </div>
-
+         
          <div className='img-wrapper'>
-            <img className="main-img" src={chosenSpot?.previewImage} alt="SpotImage" />
+            <img className="main-img" src={singleSpot?.SpotImages[0].url} alt="SpotImage" />
 
             <div className="other-images-grid">
                <ul>
@@ -72,7 +66,7 @@ const SpotShow = () => {
          <div className='middle-info-wrapper'>
             <div className='bot-info'>
                <h2>Hosted by {singleSpot?.Owner?.firstName}</h2>
-               <p>{chosenSpot?.description}</p>
+               <p>{singleSpot?.description}</p>
                <div className="more-info">
                   <div>
                      <div className="more-info-title">Self check-in</div>
@@ -87,13 +81,13 @@ const SpotShow = () => {
             </div>
             <div className='price-module'>
                <div className='top-price-module'>
-                  <span><span className='module-price-number'>${chosenSpot?.price}</span> per night</span>
+                  <span><span className='module-price-number'>${singleSpot?.price}</span> per night</span>
                   <span className='module-rating'>★ {displayRating} · {singleSpot?.numReviews} reviews</span>
                </div>
                <div className='bot-price-module'>
                   <div className='calculation'>
-                     <div>${chosenSpot?.price} x 5 nights</div>
-                     <div>${(chosenSpot?.price * 5)}</div>
+                     <div>${singleSpot?.price} x 5 nights</div>
+                     <div>${(singleSpot?.price * 5)}</div>
                   </div>
 
                   <div className='calculation'>
@@ -108,7 +102,7 @@ const SpotShow = () => {
 
                   <div className='final calculation'>
                      <div>Total before taxes</div>
-                     <div>${(chosenSpot?.price * 5 + 100 + 255)}</div>
+                     <div>${(singleSpot?.price * 5 + 100 + 255)}</div>
                   </div>
                </div>
             </div>
@@ -117,7 +111,7 @@ const SpotShow = () => {
          <div className='review-wrapper'>
             <h3>★ {displayRating} · {singleSpot?.numReviews} reviews</h3>
             {allowCreate &&
-               <NavLink className='leave-a-review-link' to={`/spots/${spotId}/reviews/new`}>Leave a Review!</NavLink>
+               <NavLink className='leave-a-review-link' to={`/spots/${spotId}/reviews/new`}>How was your stay? Leave a Review!</NavLink>
             }
             <ul className='review-list'>
                {spotReviewsArr?.map(review => (

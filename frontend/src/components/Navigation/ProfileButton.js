@@ -29,7 +29,7 @@ function ProfileButton({ user }) {
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
-    window.alert("Successfully Logged Out")
+    window.alert("Successfully Logged Out - Have a Great Day!")
     history.push('/');
   };
 

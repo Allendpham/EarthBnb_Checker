@@ -20,11 +20,13 @@ function LoginForm () {
     const handleSubmit = (e) => {
       e.preventDefault();
       setErrors([]);
-      return dispatch(sessionActions.login({ credential, password }))
+      dispatch(sessionActions.login({ credential, password }))
         .catch(async (res) => {
           const data = await res.json();
           if (data && data.errors) setErrors(data.errors);
         });
+      console.log(errors, 'these are errors');
+      if(!errors.length) window.alert(`Successfully Logged In - Welcome to Earthbnb!`);
     }
 
     return (
@@ -60,10 +62,10 @@ function LoginForm () {
         </label>
         <button type="submit">Log In</button>
         <button
-          onClick={() => dispatch(sessionActions.login({
+          onClick={() => (dispatch(sessionActions.login({
             credential: "Demo-lition",
             password: "password"
-          }))}
+          })), window.alert('Successfully Logged In - Welcome to Earthbnb!'))}
         >
           Demo User
           </button>
