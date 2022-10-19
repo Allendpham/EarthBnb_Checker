@@ -16,10 +16,25 @@
 
 .review {
    width: 90%;
-   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
    padding-bottom: 20px;
 }
 
 .review-item {
-   margin-bottom: 20px;
+   margin-bottom: 16px;
+   height: fit-content;
+}
+
+.spots-review-delete-button {
+   width: 50%;
+   color: white;
+   background-color: rgba(220, 16, 98);
+   border: none;
+   font-size: 16px;
+   height: 30px;
+   border-radius: 10px;
+}
+
+.spots-review-delete-button:hover {
+   cursor: pointer;
 }

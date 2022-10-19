@@ -15,13 +15,16 @@ const validateSpot = [
      .withMessage('Street address is required.'),
    check('city')
      .exists({ checkFalsy: true })
-     .withMessage('City is required.'),
+     .isAlpha()
+     .withMessage('City is required and can only contain letters.'),
    check('state')
      .exists({ checkFalsy: true })
-     .withMessage('State is required.'),
+     .isAlpha()
+     .withMessage('State is required and can only contain letters.'),
    check('country')
      .exists({ checkFalsy: true })
-     .withMessage('Country is required.'),
+     .isAlpha()
+     .withMessage('Country is required and can only contain letters.'),
    check('name')
      .exists({ checkFalsy: true })
      .isLength({ min: 1, max: 50 })
@@ -31,7 +34,8 @@ const validateSpot = [
      .withMessage('Description is required.'),
    check('price')
      .exists({ checkFalsy: true })
-     .withMessage('Price per day is required.'),
+     .isInt({min: 1})
+     .withMessage('Price per day is required and must be greater than 0.'),
    handleValidationErrors
  ];
 
@@ -39,7 +43,8 @@ const validateSpot = [
  const validateReview = [
    check('review')
      .exists({ checkFalsy: true })
-     .withMessage('Review text is required.'),
+     .isLength({min: 1, max: 500})
+     .withMessage('Review text is required. Character Limit: 500'),
    check('stars')
      .exists({ checkFalsy: true })
      .isInt({gt: 0, lt: 6})

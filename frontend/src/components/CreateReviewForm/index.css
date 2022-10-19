@@ -4,7 +4,7 @@
    align-content: center;
    justify-items: center;
    align-items: center;
-   width: 520px;
+   width: fit-content;
    height: auto;
    margin: auto;
 }
@@ -67,6 +67,6 @@
 }
 
 .star-radio-buttons label {
-   font-size: 18px;
+   font-size: 17px;
    padding-right: 7px;
 }

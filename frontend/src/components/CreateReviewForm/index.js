@@ -28,7 +28,7 @@ function CreateReviewForm () {
 
                                     const inputs = document.getElementsByTagName('textarea');
 
-                                    data.errors.includes("Review text is required.") ?
+                                    data.errors.includes("Review text is required. Character Limit: 500") ?
                                        inputs[0].style.border = "2px solid rgb(192, 53, 21)" :
                                        inputs[0].style.border = "1px solid rgba(0, 0, 0, 0.4)";
                                  }

@@ -49,15 +49,15 @@ const CreateSpotForm = () => {
                                     inputs[0].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[0].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-                                 data.errors.includes("City is required.") ?
+                                 data.errors.includes("City is required and can only contain letters.") ?
                                     inputs[1].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[1].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-                                 data.errors.includes("State is required.") ?
+                                 data.errors.includes("State is required and can only contain letters.") ?
                                     inputs[2].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[2].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-                                 data.errors.includes("Country is required.") ?
+                                 data.errors.includes("Country is required and can only contain letters.") ?
                                     inputs[3].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[3].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
@@ -69,7 +69,7 @@ const CreateSpotForm = () => {
                                     inputs[5].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[5].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-                                 data.errors.includes('Price per day is required.') ?
+                                 data.errors.includes('Price per day is required and must be greater than 0.') ?
                                     inputs[6].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[6].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
