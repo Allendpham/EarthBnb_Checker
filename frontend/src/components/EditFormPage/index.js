@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionEditASpot } from '../../store/spots';
+import './index.css';
 
 const EditSpotForm = () => {
    const dispatch = useDispatch();
@@ -16,18 +17,13 @@ const EditSpotForm = () => {
    const [city, setCity] = useState(chosenSpot.city);
    const [state, setState] = useState(chosenSpot.state);
    const [country, setCountry] = useState(chosenSpot.country);
-   const [lat, setLat] = useState(chosenSpot.lat);
-   const [lng, setLng] = useState(chosenSpot.lng);
    const [name, setName] = useState(chosenSpot.name);
    const [description, setDescription] = useState(chosenSpot.description);
    const [price, setPrice] = useState(chosenSpot.price);
    const [errors, setErrors] = useState([]);
 
 
-   //if no session user/not logged in redirect to log in page?
-   //or remove the host a spot button when no user is logged in?
-
-   const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
       e.preventDefault();
 
       const payload = {
@@ -35,19 +31,50 @@ const EditSpotForm = () => {
          city,
          state,
          country,
-         lat,
-         lng,
          name,
          description,
          price
       };
 
-      let edittedSpot =  dispatch(actionEditASpot(payload, chosenSpot.id))
+      let edittedSpot =  await dispatch(actionEditASpot(payload, spotId))
                            .catch(async (res) => {
                               const data = await res.json();
-                              if (data && data.errors) setErrors(data.errors);
+                              if (data && data.errors) {
+                                 setErrors(data.errors)
+
+                                 const inputs = document.getElementsByTagName('input');
+
+                                 data.errors.includes("Street address is required.") ?
+                                    inputs[0].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[0].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 data.errors.includes("City is required.") ?
+                                    inputs[1].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[1].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 data.errors.includes("State is required.") ?
+                                    inputs[2].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[2].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 data.errors.includes("Country is required.") ?
+                                    inputs[3].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[3].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 data.errors.includes('Name must exist and be less than 50 characters.') ?
+                                    inputs[4].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[4].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 data.errors.includes("Description is required.") ?
+                                    inputs[5].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[5].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 data.errors.includes('Price per day is required.') ?
+                                    inputs[6].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[6].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                              };
                            });
-      if (edittedSpot && !errors.length) {
+      if (edittedSpot) {
          history.push('/account');
       }
    }
@@ -56,96 +83,69 @@ const EditSpotForm = () => {
    return (
       <form className='spot-form-wrapper' onSubmit={handleSubmit}>
          <h2>Edit Your Spot</h2>
-         <ul>
-            {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+         <ul className='error-list'>
+            {errors.map((error, idx) => <li key={idx}><i className='fa fa-exclamation-circle' />  {error}</li>)}
          </ul>
          <label>
-            Address
             <input
             type='text'
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            required
+            placeholder='Address'
             />
          </label>
 
          <label>
-            City
             <input
             type='text'
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            required
+            placeholder='City'
             />
          </label>
 
          <label>
-            State
             <input
             type='text'
             value={state}
             onChange={(e) => setState(e.target.value)}
-            required
+            placeholder='State'
             />
          </label>
 
          <label>
-            Country
             <input
             type='text'
             value={country}
             onChange={(e) => setCountry(e.target.value)}
-            required
+            placeholder='Country'
             />
          </label>
 
          <label>
-            Latitude
-            <input
-            type='number'
-            value={lat}
-            onChange={(e) => setLat(Number(e.target.value))}
-            required
-            />
-         </label>
-
-         <label>
-            Longitude
-            <input
-            type='number'
-            value={lng}
-            onChange={(e) => setLng(Number(e.target.value))}
-            required
-            />
-         </label>
-
-         <label>
-            Name
             <input
             type='text'
             value={name}
             onChange={(e) => setName(e.target.value)}
-            required
+            placeholder='Name'
             />
          </label>
 
          <label>
-            Description
-            <textarea
+            <input
             type='text'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            required
+            placeholder='Description'
             />
          </label>
 
          <label>
-            Price
             <input
             type='number'
             value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
-            required
+            placeholder='Price'
             />
          </label>
 

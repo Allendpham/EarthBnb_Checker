@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {useHistory, Link} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionAddSpot, actionAddImageUrl } from '../../store/spots';
+import LoginFormModal from '../LoginFormModal';
 import './index.css';
 
 const CreateSpotForm = () => {
@@ -12,8 +13,6 @@ const CreateSpotForm = () => {
    const [city, setCity] = useState("");
    const [state, setState] = useState("");
    const [country, setCountry] = useState("");
-   const [lat, setLat] = useState("");
-   const [lng, setLng] = useState("");
    const [name, setName] = useState("");
    const [description, setDescription] = useState("");
    const [price, setPrice] = useState("");
@@ -28,8 +27,6 @@ const CreateSpotForm = () => {
          city,
          state,
          country,
-         lat,
-         lng,
          name,
          description,
          price
@@ -43,12 +40,50 @@ const CreateSpotForm = () => {
       let createdSpot =  await dispatch(actionAddSpot(payload))
                            .catch(async (res) => {
                               const data = await res.json();
-                              if (data && data.errors) setErrors(data.errors);
-                           })
-      dispatch(actionAddImageUrl(imgPayload, createdSpot.id));
+                              if (data && data.errors) {
+                                 setErrors(data.errors);
 
-      if (createdSpot && !errors.length) {
-         history.push(`/account`);
+                                 const inputs = document.getElementsByTagName('input');
+
+                                 data.errors.includes("Street address is required.") ?
+                                    inputs[0].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[0].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 data.errors.includes("City is required.") ?
+                                    inputs[1].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[1].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 data.errors.includes("State is required.") ?
+                                    inputs[2].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[2].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 data.errors.includes("Country is required.") ?
+                                    inputs[3].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[3].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 data.errors.includes('Name must exist and be less than 50 characters.') ?
+                                    inputs[4].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[4].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 data.errors.includes("Description is required.") ?
+                                    inputs[5].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[5].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 data.errors.includes('Price per day is required.') ?
+                                    inputs[6].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[6].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 // if(!imgUrl){
+                                 //    inputs[7].style.border = "2px solid rgb(192, 53, 21)";
+                                 //    setErrors([...data.errors, 'Preview Image Url must exist.'])
+                                 // } else {
+                                 //    inputs[7].style.border = "1px solid rgba(0, 0, 0, 0.4)"
+                                 // }
+                              }
+                           })
+      if(createdSpot) {
+         dispatch(actionAddImageUrl(imgPayload, createdSpot.id));
+         history.push('/account')
       }
    }
 
@@ -56,17 +91,16 @@ const CreateSpotForm = () => {
    return (
       <div className='spot-form'>
          <form className='spot-form-wrapper' onSubmit={handleSubmit}>
-            <h2>Create a Spot</h2>
-            {!sessionUser && <span>Please login or signup to host a spot.</span>}
-            <ul>
-               {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+            <h2>Host a Spot</h2>
+            {!sessionUser && <span className='no-user-error'><i className='fa fa-exclamation-circle' />  Please login or signup to host a spot.</span>}
+            <ul className='errors-list'>
+               {errors.map((error, idx) => <li key={idx}><i className='fa fa-exclamation-circle' />  {error}</li>)}
             </ul>
             <label>
                <input
                type='text'
                value={address}
                onChange={(e) => setAddress(e.target.value)}
-               required
                placeholder='Address'
                />
             </label>
@@ -76,7 +110,6 @@ const CreateSpotForm = () => {
                type='text'
                value={city}
                onChange={(e) => setCity(e.target.value)}
-               required
                placeholder='City'
                />
             </label>
@@ -86,7 +119,6 @@ const CreateSpotForm = () => {
                type='text'
                value={state}
                onChange={(e) => setState(e.target.value)}
-               required
                placeholder='State'
                />
             </label>
@@ -96,28 +128,7 @@ const CreateSpotForm = () => {
                type='text'
                value={country}
                onChange={(e) => setCountry(e.target.value)}
-               required
                placeholder='Country'
-               />
-            </label>
-
-            <label>
-               <input
-               type='number'
-               value={lat}
-               onChange={(e) => setLat(Number(e.target.value))}
-               required
-               placeholder='Latitude'
-               />
-            </label>
-
-            <label>
-               <input
-               type='number'
-               value={lng}
-               onChange={(e) => setLng(Number(e.target.value))}
-               required
-               placeholder='Longitude'
                />
             </label>
 
@@ -126,7 +137,6 @@ const CreateSpotForm = () => {
                type='text'
                value={name}
                onChange={(e) => setName(e.target.value)}
-               required
                placeholder='Name'
                />
             </label>
@@ -136,7 +146,6 @@ const CreateSpotForm = () => {
                type='text'
                value={description}
                onChange={(e) => setDescription(e.target.value)}
-               required
                placeholder='Description'
                />
             </label>
@@ -145,9 +154,9 @@ const CreateSpotForm = () => {
                <input
                type='number'
                value={price}
-               onChange={(e) => setPrice(Number(e.target.value))}
-               required
+               onChange={(e) => setPrice(e.target.value)}
                placeholder='Price'
+               className='price-input'
                />
             </label>
 
@@ -156,12 +165,11 @@ const CreateSpotForm = () => {
                type='text'
                value={imgUrl}
                onChange={(e) => setImgUrl(e.target.value)}
-               required
                placeholder='Preview Image URL'
                />
             </label>
 
-            <button type="submit" disabled={sessionUser? false: true}>Create Spot</button>
+            <button type="submit" disabled={sessionUser? false: true}>Host Spot</button>
          </form>
       </div>
 

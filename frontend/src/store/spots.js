@@ -79,7 +79,7 @@ export const actionEditASpot = (payload, id) => async (dispatch) => {
    if(response.ok){
       const data = await response.json();
       dispatch(addSpot(data));
-      return response;
+      return data;
    }
 };
 
@@ -120,7 +120,7 @@ const initialState = {allSpots: {}, singleSpot: {}};
 const spotsReducer = (state = initialState, action) => {
    switch(action.type){
       case GET_ALL_SPOTS: {
-         const newState = {...state, allSpots: {...state.allSpots}, singleSpot: {}};
+         const newState = {...state, allSpots: {}, singleSpot: {}};
          action.spots.Spots.forEach((spot) => (newState.allSpots[spot.id] = spot));
          return newState;
       }

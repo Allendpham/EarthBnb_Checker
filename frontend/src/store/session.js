@@ -64,7 +64,7 @@ export const logout = () => async (dispatch) => {
    dispatch(removeUser());
    return response;
  };
- 
+
 //Session Reducer
 const initialState = { user: null };
 

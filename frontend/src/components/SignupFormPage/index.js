@@ -26,10 +26,40 @@ function SignupFormPage() {
       return dispatch(sessionActions.signup({ email, username, password, firstName, lastName }))
         .catch(async (res) => {
           const data = await res.json();
-          if (data && data.errors) setErrors(data.errors);
+          if (data && data.errors) {
+            setErrors(data.errors);
+
+            const inputs = document.getElementsByTagName('input');
+
+            data.errors.includes("Please provide a valid email.") ?
+              inputs[0].style.border = "2px solid rgb(192, 53, 21)" :
+              inputs[0].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+            data.errors.includes("Please provide a username with at least 4 characters.") ?
+              inputs[1].style.border = "2px solid rgb(192, 53, 21)" :
+              inputs[1].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+            data.errors.includes("Please provide a first name.") ?
+              inputs[2].style.border = "2px solid rgb(192, 53, 21)" :
+              inputs[2].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+            data.errors.includes("Please provide a last name.") ?
+              inputs[3].style.border = "2px solid rgb(192, 53, 21)" :
+              inputs[3].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+            data.errors.includes("Password must be 6 characters or more.") ?
+              inputs[4].style.border = "2px solid rgb(192, 53, 21)" :
+              inputs[4].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+
+              inputs[5].style.border = "1px solid rgba(0, 0, 0, 0.4)"
+          }
         });
     }
-    return setErrors(['Confirm Password field must be the same as the Password field']);
+    const inputs = document.getElementsByTagName('input');
+    inputs[5].style.border = "2px solid rgb(192, 53, 21)"
+    return setErrors(['Confirm Password field must be the same as the Password field.']);
+
   };
 
   return (
@@ -39,15 +69,14 @@ function SignupFormPage() {
         </div>
       <form onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit} className='signup-form-wrapper'>
         <h2>Welcome to Earthbnb</h2>
-        <ul>
-          {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+        <ul className='errors-list'>
+          {errors.map((error, idx) => <li key={idx}><i className='fa fa-exclamation-circle' />  {error}</li>)}
         </ul>
         <label>
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
             placeholder="Email"
           />
         </label>
@@ -56,7 +85,6 @@ function SignupFormPage() {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            required
             placeholder="Username"
           />
         </label>
@@ -65,7 +93,6 @@ function SignupFormPage() {
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-            required
             placeholder="First Name"
           />
         </label>
@@ -73,7 +100,6 @@ function SignupFormPage() {
           <input
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
-            required
             placeholder="Last Name"
           />
         </label>
@@ -82,7 +108,6 @@ function SignupFormPage() {
             type='password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
             placeholder="Password"
           />
         </label>
@@ -91,7 +116,6 @@ function SignupFormPage() {
             type='password'
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            required
             placeholder="Confirm Password"
           />
         </label>

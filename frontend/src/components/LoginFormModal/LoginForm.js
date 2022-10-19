@@ -17,16 +17,30 @@ function LoginForm () {
     );
 
 
+
     const handleSubmit = (e) => {
       e.preventDefault();
       setErrors([]);
       dispatch(sessionActions.login({ credential, password }))
         .catch(async (res) => {
           const data = await res.json();
-          if (data && data.errors) setErrors(data.errors);
+          if (data && data.errors) {
+            setErrors(data.errors);
+
+            const userEmailInput = document.querySelector('.username-email-input')
+            const passwordInput = document.querySelector('.password-input');
+
+            data?.errors.includes('Please provide a valid email or username.') || data?.errors.includes('The provided credentials were invalid.') ?
+                userEmailInput.style.border = "2px solid rgb(192, 53, 21)" :
+                userEmailInput.style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+            data.errors.includes('Please provide a password.') || data.errors.includes('The provided credentials were invalid.') ?
+                passwordInput.style.border = "2px solid rgb(192, 53, 21)" :
+                passwordInput.style.border = "1px solid rgba(0, 0, 0, 0.4)";
+          } 
         });
-      console.log(errors, 'these are errors');
-      if(!errors.length) window.alert(`Successfully Logged In - Welcome to Earthbnb!`);
+
+      // if(!errors.length) window.alert(`Successfully Logged In - Welcome to Earthbnb!`);
     }
 
     return (
@@ -37,8 +51,8 @@ function LoginForm () {
       <form onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}
          className='login-form-wrapper'>
           <h2>Welcome to Earthbnb</h2>
-        <ul>
-          {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+        <ul className='errors-list'>
+          {errors.map((error, idx) => <li className='errors-list-item' key={idx}><i className='fa fa-exclamation-circle' />  {error}</li>)}
         </ul>
         <label>
           <input
@@ -46,7 +60,6 @@ function LoginForm () {
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             placeholder="Username or Email"
-            required
             className='username-email-input'
           />
         </label>
@@ -56,7 +69,6 @@ function LoginForm () {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            required
             className='password-input'
           />
         </label>
@@ -65,7 +77,7 @@ function LoginForm () {
           onClick={() => (dispatch(sessionActions.login({
             credential: "Demo-lition",
             password: "password"
-          })), window.alert('Successfully Logged In - Welcome to Earthbnb!'))}
+          })), setCredential('Demo-lition'), setPassword('password'), window.alert('Successfully Logged In - Welcome to Earthbnb!'))}
         >
           Demo User
           </button>

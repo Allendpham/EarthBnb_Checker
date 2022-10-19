@@ -8,7 +8,7 @@
    justify-items: center;
    align-items: center;
    width: 520px;
-   height: 575px;
+   height: fit-content;
    padding: 0 24px 24px 24px;
 }
 
@@ -64,4 +64,13 @@
    cursor: pointer;
    font-weight: bolder;
    color: rgba(220, 16, 98);
+}
+
+.errors-list {
+   list-style-type: none;
+   display: flex;
+   flex-direction: column;
+   align-self: flex-start;
+   color: rgb(192, 53, 21);
+   font-size: 15px;
 }

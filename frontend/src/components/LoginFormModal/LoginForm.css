@@ -4,7 +4,7 @@
    justify-items: center;
    align-items: center;
    width: 520px;
-   height: 375px;
+   height: fit-content;
    padding: 0 24px 24px 24px;
 }
 
@@ -58,4 +58,13 @@
 
 .login-form-wrapper button:hover {
    cursor: pointer;
+}
+
+.errors-list {
+   list-style-type: none;
+   display: flex;
+   flex-direction: column;
+   align-self: flex-start;
+   color: rgb(192, 53, 21);
+   font-size: 15px;
 }

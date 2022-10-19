@@ -1,0 +1,8 @@
+.error-list {
+   list-style-type: none;
+   display: flex;
+   flex-direction: column;
+   align-self: flex-start;
+   color: rgb(192, 53, 21);
+   font-size: 15px;
+}

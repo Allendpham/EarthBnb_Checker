@@ -9,8 +9,9 @@ const handleValidationErrors = (req, _res, next) => {
   if (!validationErrors.isEmpty()) {
     const errors = validationErrors
       .array()
-      .map((error) => `${error.msg}`);
-
+      .map((error) => `${error.msg}`)
+      .filter((msg) => msg !== 'Invalid value');
+    
     const err = Error('Bad request.');
     err.errors = errors;
     err.status = 400;

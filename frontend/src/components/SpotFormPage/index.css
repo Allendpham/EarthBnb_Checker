@@ -4,7 +4,7 @@
    align-content: center;
    justify-items: center;
    align-items: center;
-   width: 520px;
+   width: fit-content;
    height: auto;
    margin: auto;
 }
@@ -46,3 +46,13 @@
    cursor: pointer;
 }
 
+.no-user-error {
+   padding-top: 10px;
+   color: rgb(192, 53, 21);
+   font-size: 15px;
+}
+
+/* .price-input::-webkit-outer-spin-button,
+.price-input::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+} */
