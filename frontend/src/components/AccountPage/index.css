@@ -5,7 +5,8 @@
 
 .account-page-module {
    border: 1px solid rgba(0, 0, 0, 0.1);
-   width: 350px;
+   /* width: 350px; */
+   width: fit-content;
    height: 230px;
    border-radius: 12px;
    margin-right: 75px;
@@ -14,6 +15,7 @@
 .user-info {
    list-style: none;
    font-size: 18px;
+   padding-right: 40px;
 }
 
 .user-info div {
@@ -23,6 +25,10 @@
 
 .user-info li {
    padding-bottom: 10px;
+}
+
+.account-page-info-wrapper {
+   width: 75%;
 }
 
 .account-page-info-wrapper h1 {
