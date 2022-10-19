@@ -68,3 +68,7 @@
    color: rgb(192, 53, 21);
    font-size: 15px;
 }
+
+button {
+   font-family: "Helvetica"
+}
