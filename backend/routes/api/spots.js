@@ -15,15 +15,15 @@ const validateSpot = [
      .withMessage('Street address is required.'),
    check('city')
      .exists({ checkFalsy: true })
-     .isAlpha()
+     .isAlpha('en-US', {ignore: ' '})
      .withMessage('City is required and can only contain letters.'),
    check('state')
      .exists({ checkFalsy: true })
-     .isAlpha()
+     .isAlpha('en-US', {ignore: ' '})
      .withMessage('State is required and can only contain letters.'),
    check('country')
      .exists({ checkFalsy: true })
-     .isAlpha()
+     .isAlpha('en-US', {ignore: ' '})
      .withMessage('Country is required and can only contain letters.'),
    check('name')
      .exists({ checkFalsy: true })
