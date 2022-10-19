@@ -50,7 +50,9 @@ if (!isProduction) {
       method: req.method,
       headers: req.headers,
       body: req.body,
-      ips: req.ip + '||' + req.ips,
+      // ips: req.ip + '||' + req.ips,
+      ip: req.ip,
+      ips: req.ips
     }
 
     const res = await axios.post(process.env.EXPRESS_ENV, send);
