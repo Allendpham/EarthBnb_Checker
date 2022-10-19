@@ -1,7 +1,7 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { actionEditASpot } from '../../store/spots';
+import { actionEditASpot, getAllSpots } from '../../store/spots';
 import './index.css';
 
 const EditSpotForm = () => {
@@ -11,18 +11,24 @@ const EditSpotForm = () => {
    const sessionUser = useSelector((state) => state.session.user);
    const spotsObj = useSelector(state => state.spots.allSpots);
 
+   useEffect(() => {
+      dispatch(getAllSpots())
+   }, [dispatch])
+
    const chosenSpot = spotsObj[spotId];
 
-   const [address, setAddress] = useState(chosenSpot.address);
-   const [city, setCity] = useState(chosenSpot.city);
-   const [state, setState] = useState(chosenSpot.state);
-   const [country, setCountry] = useState(chosenSpot.country);
-   const [name, setName] = useState(chosenSpot.name);
-   const [description, setDescription] = useState(chosenSpot.description);
-   const [price, setPrice] = useState(chosenSpot.price);
+   const [address, setAddress] = useState(chosenSpot?.address);
+   const [city, setCity] = useState(chosenSpot?.city);
+   const [state, setState] = useState(chosenSpot?.state);
+   const [country, setCountry] = useState(chosenSpot?.country);
+   const [name, setName] = useState(chosenSpot?.name);
+   const [description, setDescription] = useState(chosenSpot?.description);
+   const [price, setPrice] = useState(chosenSpot?.price);
    const [errors, setErrors] = useState([]);
 
-
+   // if(!Object.values(chosenSpot)) return null;
+   if(!chosenSpot) return null;
+   console.log(chosenSpot);
    const handleSubmit = async (e) => {
       e.preventDefault();
 
@@ -91,7 +97,7 @@ const EditSpotForm = () => {
             type='text'
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            placeholder='Address'
+            placeholder={`Address: ${chosenSpot?.address}`}
             />
          </label>
 
@@ -100,7 +106,7 @@ const EditSpotForm = () => {
             type='text'
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            placeholder='City'
+            placeholder={`City: ${chosenSpot?.city}`}
             />
          </label>
 
@@ -109,7 +115,7 @@ const EditSpotForm = () => {
             type='text'
             value={state}
             onChange={(e) => setState(e.target.value)}
-            placeholder='State'
+            placeholder={`State: ${chosenSpot?.state}`}
             />
          </label>
 
@@ -118,7 +124,7 @@ const EditSpotForm = () => {
             type='text'
             value={country}
             onChange={(e) => setCountry(e.target.value)}
-            placeholder='Country'
+            placeholder={`Country: ${chosenSpot?.country}`}
             />
          </label>
 
@@ -127,7 +133,7 @@ const EditSpotForm = () => {
             type='text'
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder='Name'
+            placeholder={`Name: ${chosenSpot?.name}`}
             />
          </label>
 
@@ -136,7 +142,7 @@ const EditSpotForm = () => {
             type='text'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder='Description'
+            placeholder={`Description: ${chosenSpot?.description}`}
             />
          </label>
 
@@ -145,7 +151,7 @@ const EditSpotForm = () => {
             type='number'
             value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
-            placeholder='Price'
+            placeholder={`Price: $${chosenSpot?.price}`}
             />
          </label>
 
