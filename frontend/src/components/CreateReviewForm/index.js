@@ -12,7 +12,7 @@ function CreateReviewForm () {
    const [errors, setErrors] = useState([]);
    const {spotId} = useParams();
 
-   const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
       e.preventDefault();
 
       const payload = {
@@ -20,12 +20,20 @@ function CreateReviewForm () {
          stars
       };
 
-      let createdReview = dispatch(actionCreateAReview(payload, spotId))
+      let createdReview = await dispatch(actionCreateAReview(payload, spotId))
                               .catch(async (res) => {
                                  const data = await res.json();
-                                 if (data && data.errors) setErrors(data.errors);
+                                 if (data && data.errors) {
+                                    setErrors(data.errors);
+
+                                    const inputs = document.getElementsByTagName('textarea');
+
+                                    data.errors.includes("Review text is required.") ?
+                                       inputs[0].style.border = "2px solid rgb(192, 53, 21)" :
+                                       inputs[0].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+                                 }
                               });
-      if(createdReview && !errors.length){
+      if(createdReview){
          history.push(`/spots/${spotId}`);
       }
    }
@@ -35,8 +43,8 @@ function CreateReviewForm () {
          <div className="review-form-header">
             <h3>Leave a Review!</h3>
          </div>
-         <ul>
-            {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+         <ul className='errors-list'>
+            {errors.map((error, idx) => <li key={idx}><i className='fa fa-exclamation-circle' />  {error}</li>)}
          </ul>
 
          <label>
@@ -44,8 +52,8 @@ function CreateReviewForm () {
             type='text'
             value={review}
             onChange={(e) => setReview(e.target.value)}
-            required
             placeholder='Enter your experience here.'
+            className='review-textarea'
             />
          </label>
 
