@@ -50,19 +50,19 @@ const EditSpotForm = () => {
 
                                  const inputs = document.getElementsByTagName('input');
 
-                                 data.errors.includes("Street address is required.") ?
+                                 data.errors.includes("Street address is required.") || data.errors.includes("Street address has a character limit of 255.") ?
                                     inputs[0].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[0].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-                                 data.errors.includes("City is required and can only contain letters.") ?
+                                 data.errors.includes("City is required and can only contain letters.") || data.errors.includes('City has a character limit of 255.') ?
                                     inputs[1].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[1].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-                                 data.errors.includes("State is required and can only contain letters.") ?
+                                 data.errors.includes("State is required and can only contain letters.") || data.errors.includes('State has a character limit of 255') ?
                                     inputs[2].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[2].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-                                 data.errors.includes("Country is required and can only contain letters.") ?
+                                 data.errors.includes("Country is required and can only contain letters.") || data.errors.includes('Country has a character limit of 255.') ?
                                     inputs[3].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[3].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
@@ -70,7 +70,7 @@ const EditSpotForm = () => {
                                     inputs[4].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[4].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-                                 data.errors.includes("Description is required.") ?
+                                 data.errors.includes("Description is required.") || data.errors.includes('Description has a character limit of 255.') ?
                                     inputs[5].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[5].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 

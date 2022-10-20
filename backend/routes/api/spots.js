@@ -13,18 +13,30 @@ const validateSpot = [
    check('address')
      .exists({ checkFalsy: true })
      .withMessage('Street address is required.'),
+   check('address')
+      .isLength({max: 255})
+      .withMessage('Street address has a character limit of 255.'),
    check('city')
      .exists({ checkFalsy: true })
      .isAlpha('en-US', {ignore: ' '})
      .withMessage('City is required and can only contain letters.'),
+   check('city')
+     .isLength({max: 255})
+     .withMessage('City has a character limit of 255.'),
    check('state')
      .exists({ checkFalsy: true })
      .isAlpha('en-US', {ignore: ' '})
      .withMessage('State is required and can only contain letters.'),
+   check('state')
+     .isLength({max: 255})
+     .withMessage('State has a character limit of 255.'),
    check('country')
      .exists({ checkFalsy: true })
      .isAlpha('en-US', {ignore: ' '})
      .withMessage('Country is required and can only contain letters.'),
+   check('country')
+     .isLength({max: 255})
+     .withMessage('Country has a character limit of 255.'),
    check('name')
      .exists({ checkFalsy: true })
      .isLength({ min: 1, max: 50 })
@@ -32,6 +44,9 @@ const validateSpot = [
    check('description')
      .exists({ checkFalsy: true })
      .withMessage('Description is required.'),
+   check('description')
+      .isLength({max: 255})
+      .withMessage("Description has a character limit of 255."),
    check('price')
      .exists({ checkFalsy: true })
      .isInt({min: 1})
