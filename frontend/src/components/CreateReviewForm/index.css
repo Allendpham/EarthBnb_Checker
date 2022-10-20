@@ -37,7 +37,6 @@
    font-family: 'Helvetica';
    font-size: 16px;
    font-weight: 400;
-   margin-bottom: 15px;
    padding-left: 15px;
    resize: none;
 }
@@ -69,4 +68,10 @@
 .star-radio-buttons label {
    font-size: 17px;
    padding-right: 7px;
+}
+
+.word-counter {
+   margin-bottom: 15px;
+   font-size: 15px;
+   color: rgba(0, 0, 0, 0.4);
 }

@@ -25,10 +25,9 @@ function CreateReviewForm () {
                                  const data = await res.json();
                                  if (data && data.errors) {
                                     setErrors(data.errors);
-
                                     const inputs = document.getElementsByTagName('textarea');
 
-                                    data.errors.includes("Review text is required. Character Limit: 500") ?
+                                    data.errors.includes("Review text is required. Character Limit: 255") ?
                                        inputs[0].style.border = "2px solid rgb(192, 53, 21)" :
                                        inputs[0].style.border = "1px solid rgba(0, 0, 0, 0.4)";
                                  }
@@ -55,6 +54,7 @@ function CreateReviewForm () {
             placeholder='Enter your experience here.'
             className='review-textarea'
             />
+            <div className='word-counter'>{255 - review.length > 0 ? 255 - review.length : 0} characters remaining</div>
          </label>
 
          <div className="star-radio-buttons">
