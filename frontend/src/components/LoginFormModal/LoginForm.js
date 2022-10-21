@@ -17,7 +17,6 @@ function LoginForm () {
     );
 
 
-
     const handleSubmit = (e) => {
       e.preventDefault();
       setErrors([]);
@@ -37,7 +36,7 @@ function LoginForm () {
             data.errors.includes('Please provide a password.') || data.errors.includes('The provided credentials were invalid.') ?
                 passwordInput.style.border = "2px solid rgb(192, 53, 21)" :
                 passwordInput.style.border = "1px solid rgba(0, 0, 0, 0.4)";
-          } 
+          }
         });
 
       // if(!errors.length) window.alert(`Successfully Logged In - Welcome to Earthbnb!`);

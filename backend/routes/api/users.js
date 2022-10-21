@@ -13,6 +13,9 @@ const validateSignup = [
     .exists({ checkFalsy: true })
     .isEmail()
     .withMessage('Please provide a valid email.'),
+  check('email')
+    .isLength({max: 255})
+    .withMessage('Email has a character limit of 255.'),
   check('username')
     .exists({ checkFalsy: true })
     .isLength({ min: 4 })
@@ -21,16 +24,28 @@ const validateSignup = [
     .not()
     .isEmail()
     .withMessage('Username cannot be an email.'),
+  check('username')
+    .isLength({max: 255})
+    .withMessage('Username has a character limit of 255.'),
   check('firstName')
     .exists({ checkFalsy: true})
     .withMessage('Please provide a first name.'),
+  check('firstName')
+    .isLength({max: 255})
+    .withMessage('First name has a character limit of 255.'),
   check('lastName')
     .exists({ checkFalsy: true})
     .withMessage('Please provide a last name.'),
+  check('lastName')
+    .isLength({max: 255})
+    .withMessage('Last name has a character limit of 255.'),
   check('password')
     .exists({ checkFalsy: true })
     .isLength({ min: 6 })
     .withMessage('Password must be 6 characters or more.'),
+  check('password')
+    .isLength({max: 255})
+    .withMessage('Password has a character limit of 255.'),
   handleValidationErrors
 ];
 

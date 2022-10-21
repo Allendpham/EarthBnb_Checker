@@ -31,23 +31,23 @@ function SignupFormPage() {
 
             const inputs = document.getElementsByTagName('input');
 
-            data.errors.includes("Please provide a valid email.") ?
+            data.errors.includes("Please provide a valid email.") || data.errors.includes("Email has a character limit of 255.") || data.errors.includes('email must be unique') ?
               inputs[0].style.border = "2px solid rgb(192, 53, 21)" :
               inputs[0].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-            data.errors.includes("Please provide a username with at least 4 characters.") ?
+            data.errors.includes("Please provide a username with at least 4 characters.")|| data.errors.includes("Username has a character limit of 255.") || data.errors.includes('username must be unique') ?
               inputs[1].style.border = "2px solid rgb(192, 53, 21)" :
               inputs[1].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-            data.errors.includes("Please provide a first name.") ?
+            data.errors.includes("Please provide a first name.") || data.errors.includes("First name has a character limit of 255.") ?
               inputs[2].style.border = "2px solid rgb(192, 53, 21)" :
               inputs[2].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-            data.errors.includes("Please provide a last name.") ?
+            data.errors.includes("Please provide a last name.") || data.errors.includes("Last name has a character limit of 255.") ?
               inputs[3].style.border = "2px solid rgb(192, 53, 21)" :
               inputs[3].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-            data.errors.includes("Password must be 6 characters or more.") ?
+            data.errors.includes("Password must be 6 characters or more.") || data.errors.includes("Password has a character limit of 255.") ?
               inputs[4].style.border = "2px solid rgb(192, 53, 21)" :
               inputs[4].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
@@ -55,7 +55,7 @@ function SignupFormPage() {
               inputs[5].style.border = "1px solid rgba(0, 0, 0, 0.4)"
           }
         });
-    }
+    } 
     const inputs = document.getElementsByTagName('input');
     inputs[5].style.border = "2px solid rgb(192, 53, 21)"
     return setErrors(['Confirm Password field must be the same as the Password field.']);
