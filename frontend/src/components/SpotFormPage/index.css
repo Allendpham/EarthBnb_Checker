@@ -56,3 +56,16 @@
 .price-input::-webkit-inner-spin-button {
    -webkit-appearance: none;
 } */
+
+.default-image-url {
+   font-size: 14px;
+   color: rgba(220, 16, 98);
+   margin-bottom: 15px;
+}
+
+/* .default-image-url:hover {
+   cursor: pointer;
+   text-decoration: underline;
+   font-size: 15px;
+   font-weight: 600;
+} */

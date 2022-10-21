@@ -18,6 +18,7 @@ const CreateSpotForm = () => {
    const [price, setPrice] = useState("");
    const [imgUrl, setImgUrl] = useState("");
    const [errors, setErrors] = useState([]);
+   const [needDefaultImg, setNeedDefaultImg] = useState(false);
 
    const handleSubmit = async (e) => {
       e.preventDefault();
@@ -46,32 +47,32 @@ const CreateSpotForm = () => {
                                  const inputs = document.getElementsByTagName('input');
 
                                  (data.errors.includes("Street address is required.") || data.errors.includes("Street address has a character limit of 255.")) ?
-                                    inputs[0].style.border = "2px solid rgb(192, 53, 21)" :
-                                    inputs[0].style.border = "1px solid rgba(0, 0, 0, 0.4)";
-
-                                 data.errors.includes("City is required and can only contain letters.") || data.errors.includes('City has a character limit of 255.')?
                                     inputs[1].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[1].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-                                 data.errors.includes("State is required and can only contain letters.") || data.errors.includes('State has a character limit of 255') ?
+                                 data.errors.includes("City is required and can only contain letters.") || data.errors.includes('City has a character limit of 255.')?
                                     inputs[2].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[2].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-                                 data.errors.includes("Country is required and can only contain letters.") || data.errors.includes('Country has a character limit of 255.') ?
+                                 data.errors.includes("State is required and can only contain letters.") || data.errors.includes('State has a character limit of 255') ?
                                     inputs[3].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[3].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-                                 data.errors.includes('Name must exist and be less than 50 characters.') ?
+                                 data.errors.includes("Country is required and can only contain letters.") || data.errors.includes('Country has a character limit of 255.') ?
                                     inputs[4].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[4].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-                                 data.errors.includes("Description is required.") || data.errors.includes('Description has a character limit of 255.') ?
+                                 data.errors.includes('Name must exist and be less than 50 characters.') ?
                                     inputs[5].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[5].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
-                                 data.errors.includes('Price per day is required and must be greater than 0.') ?
+                                 data.errors.includes("Description is required.") || data.errors.includes('Description has a character limit of 255.') ?
                                     inputs[6].style.border = "2px solid rgb(192, 53, 21)" :
                                     inputs[6].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 data.errors.includes('Price per day is required and must be greater than 0.') ?
+                                    inputs[7].style.border = "2px solid rgb(192, 53, 21)" :
+                                    inputs[7].style.border = "1px solid rgba(0, 0, 0, 0.4)";
 
                               }
                            })
@@ -80,6 +81,19 @@ const CreateSpotForm = () => {
          history.push('/account')
       }
    }
+
+   function autoFillImage() {
+      // let imgInput = document.getElementById('imgInput');
+      // console.log(imgInput);
+      // imgInput.value = 'https://i.imgur.com/Nkhlnvk.jpg';
+      // // setImgUrl('https://i.imgur.com/Nkhlnvk.jpg');
+      // // imgInput.getAttribute('required');
+      // // imgInput.removeAttribute('required');
+      // imgInput.setAttribute('required', '');
+      // imgInput.required = false;
+
+   }
+
 
    //To-do: adjust / implement formType as prop
    return (
@@ -90,6 +104,21 @@ const CreateSpotForm = () => {
             <ul className='errors-list'>
                {errors.map((error, idx) => <li key={idx}><i className='fa fa-exclamation-circle' />  {error}</li>)}
             </ul>
+
+            <label>
+               <input
+               type='text'
+               value={imgUrl}
+               onChange={(e) => setImgUrl(e.target.value)}
+               placeholder='Preview Image URL'
+               required
+               onInvalid={e => (e.target.setCustomValidity('Preview Image Url is required. Consider using provided default below.'), setNeedDefaultImg(true))}
+               onInput={e => e.target.setCustomValidity('')}
+               id='imgInput'
+               />
+            </label>
+            {needDefaultImg && <div onClick={() => autoFillImage()} id='default-image' className='default-image-url'>Default Image: https://i.imgur.com/Nkhlnvk.jpg</div>}
+
             <label>
                <input
                type='text'
@@ -151,15 +180,6 @@ const CreateSpotForm = () => {
                onChange={(e) => setPrice(e.target.value)}
                placeholder='Price'
                className='price-input'
-               />
-            </label>
-
-            <label>
-               <input
-               type='text'
-               value={imgUrl}
-               onChange={(e) => setImgUrl(e.target.value)}
-               placeholder='Preview Image URL'
                />
             </label>
 
