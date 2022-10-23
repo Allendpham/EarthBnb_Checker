@@ -11,19 +11,25 @@ EarthBnB is a full stack application that is inspired by AirBnB. It can be used 
 
 ### Getting Started
 
+Clone the repo into your local directory using the "Code" button above. Open a terminal and change directory to the repo.
+
 Create a .env file located in the root of the backend folder formatted similarly to the .env.example file located in the same directory.
 
 Run the following commands to run the application locally:
 ```js
+//Inside of Terminal
 npm install
 cd backend/
 npx dotenv sequelize db:migrate
 npx dotenv sequelize-cli db:seed:all
 npm start
+
+//Inside of a Different Terminal
 cd ../frontend/
 npm start
 ```
 Upon completion, the site should launch in your local browser. Recommended: Google Chrome.
+NOTE: the backend and frontend npm start's must both be running on separate terminals in order to operate the application locally.
 ***
 
 [API DOCUMENTATION](https://github.com/Allendpham/AirBnB/wiki/API-Documentation)
@@ -78,8 +84,8 @@ Pseudo code that illustrates the state of the Redux store for the two features t
 
 ### Contact Information
 Have any questions or want to start a conversation? Contact Allen Pham at any of the options below:
-Email: Allendpham@gmail.com
-[LinkedIn](https://www.linkedin.com/in/allen-pham/)
+* Email: Allendpham@gmail.com
+* [LinkedIn](https://www.linkedin.com/in/allen-pham/)
 
 ### Future Features
 * A fully functional bookings feature to allow users to create, edit, or delete bookings for spot listings
