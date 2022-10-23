@@ -38,48 +38,68 @@ const CreateSpotForm = () => {
          preview: true
       }
 
-      let createdSpot =  await dispatch(actionAddSpot(payload))
-                           .catch(async (res) => {
-                              const data = await res.json();
-                              if (data && data.errors) {
-                                 setErrors(data.errors);
+      let imageError = false;
+      if (!/^https?:\/\/.+\.(jpg|jpeg|png|JPG|JPEG|PNG)$/.test(imgUrl)) {
+         setErrors(['Image Url must be valid. (e.g. https://example.jpg) (Accepted: .jpg | .jpeg | .png)']);
+         imageError = true;
 
-                                 const inputs = document.getElementsByTagName('input');
+         const inputs = document.getElementsByTagName('input');
 
-                                 (data.errors.includes("Street address is required.") || data.errors.includes("Street address has a character limit of 255.")) ?
-                                    inputs[1].style.border = "2px solid rgb(192, 53, 21)" :
-                                    inputs[1].style.border = "1px solid rgba(0, 0, 0, 0.4)";
-
-                                 data.errors.includes("City is required and can only contain letters.") || data.errors.includes('City has a character limit of 255.')?
-                                    inputs[2].style.border = "2px solid rgb(192, 53, 21)" :
-                                    inputs[2].style.border = "1px solid rgba(0, 0, 0, 0.4)";
-
-                                 data.errors.includes("State is required and can only contain letters.") || data.errors.includes('State has a character limit of 255') ?
-                                    inputs[3].style.border = "2px solid rgb(192, 53, 21)" :
-                                    inputs[3].style.border = "1px solid rgba(0, 0, 0, 0.4)";
-
-                                 data.errors.includes("Country is required and can only contain letters.") || data.errors.includes('Country has a character limit of 255.') ?
-                                    inputs[4].style.border = "2px solid rgb(192, 53, 21)" :
-                                    inputs[4].style.border = "1px solid rgba(0, 0, 0, 0.4)";
-
-                                 data.errors.includes('Name must exist and be less than 50 characters.') ?
-                                    inputs[5].style.border = "2px solid rgb(192, 53, 21)" :
-                                    inputs[5].style.border = "1px solid rgba(0, 0, 0, 0.4)";
-
-                                 data.errors.includes("Description is required.") || data.errors.includes('Description has a character limit of 255.') ?
-                                    inputs[6].style.border = "2px solid rgb(192, 53, 21)" :
-                                    inputs[6].style.border = "1px solid rgba(0, 0, 0, 0.4)";
-
-                                 data.errors.includes('Price per day is required and must be greater than 0.') ?
-                                    inputs[7].style.border = "2px solid rgb(192, 53, 21)" :
-                                    inputs[7].style.border = "1px solid rgba(0, 0, 0, 0.4)";
-
-                              }
-                           })
-      if(createdSpot) {
-         dispatch(actionAddImageUrl(imgPayload, createdSpot.id));
-         history.push('/account')
+         // errors.includes("Image Url must be valid. (e.g. https://example.jpg) (.jpg|jpeg|png)") ?
+            inputs[0].style.border = "2px solid rgb(192, 53, 21)"
+            // inputs[0].style.border = '1px solid rgba(0, 0, 0, 0.4)';
       }
+
+      if(!imageError){
+         let createdSpot =  await dispatch(actionAddSpot(payload))
+                              .catch(async (res) => {
+                                 const data = await res.json();
+                                 if (data && data.errors) {
+                                    setErrors(data.errors);
+
+                                    const inputs = document.getElementsByTagName('input');
+
+                                    data.errors.includes("Image Url must be valid. (e.g. https:/example.jpg)") ?
+                                       inputs[0].style.border = "2px solid rgb(192, 53, 21)" :
+                                       inputs[0].style.border = '1px solid rgba(0, 0, 0, 0.4)';
+
+                                    (data.errors.includes("Street address is required.") || data.errors.includes("Street address has a character limit of 255.")) ?
+                                       inputs[1].style.border = "2px solid rgb(192, 53, 21)" :
+                                       inputs[1].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                    data.errors.includes("City is required and can only contain letters.") || data.errors.includes('City has a character limit of 255.')?
+                                       inputs[2].style.border = "2px solid rgb(192, 53, 21)" :
+                                       inputs[2].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                    data.errors.includes("State is required and can only contain letters.") || data.errors.includes('State has a character limit of 255') ?
+                                       inputs[3].style.border = "2px solid rgb(192, 53, 21)" :
+                                       inputs[3].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                    data.errors.includes("Country is required and can only contain letters.") || data.errors.includes('Country has a character limit of 255.') ?
+                                       inputs[4].style.border = "2px solid rgb(192, 53, 21)" :
+                                       inputs[4].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                    data.errors.includes('Name must exist and be less than 50 characters.') ?
+                                       inputs[5].style.border = "2px solid rgb(192, 53, 21)" :
+                                       inputs[5].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                    data.errors.includes("Description is required.") || data.errors.includes('Description has a character limit of 255.') ?
+                                       inputs[6].style.border = "2px solid rgb(192, 53, 21)" :
+                                       inputs[6].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                    data.errors.includes('Price per day is required and must be greater than 0.') ?
+                                       inputs[7].style.border = "2px solid rgb(192, 53, 21)" :
+                                       inputs[7].style.border = "1px solid rgba(0, 0, 0, 0.4)";
+
+                                 }
+                              })
+
+                              if(createdSpot) {
+                                 dispatch(actionAddImageUrl(imgPayload, createdSpot.id));
+                                 history.push('/account')
+                              }
+      }
+
    }
 
    function autoFillImage() {
