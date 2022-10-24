@@ -6,7 +6,7 @@ import * as sessionActions from '../../store/session';
 import LoginFormModal from "../LoginFormModal";
 import SignUpFormModal from "../SignupFormPage/SignUpFormModal";
 
-function NoUserProfileButton({ user }) {
+function NoUserProfileButton({ user, setShowSignup, setLogin }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
 
@@ -36,12 +36,14 @@ function NoUserProfileButton({ user }) {
       {showMenu && (
         <ul className="profile-dropdown-nouser">
          <li>
-         <LoginFormModal />
+         {/* <LoginFormModal /> */}
+         <button className="login-button" onClick={() => setLogin(true)}>Log In</button>
          </li>
 
          <li>
             {/* <NavLink className="account-button" to="/signup">Sign Up</NavLink> */}
-            <SignUpFormModal />
+            {/* <SignUpFormModal /> */}
+            <button className="account-button" onClick={() => setShowSignup(true)}>Sign Up</button>
          </li>
 
         </ul>

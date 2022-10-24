@@ -5,7 +5,7 @@ import { Redirect, useHistory } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 import './SignupForm.css';
 
-function SignupFormPage() {
+function SignupFormPage({setShowSignup}) {
    // const history = useHistory(); Redirect to home page after signing up??
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
@@ -16,14 +16,15 @@ function SignupFormPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [errors, setErrors] = useState([]);
+  const history = useHistory();
 
   if (sessionUser) return <Redirect to="/" />;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
       setErrors([]);
-      return dispatch(sessionActions.signup({ email, username, password, firstName, lastName }))
+      let signedUser = await dispatch(sessionActions.signup({ email, username, password, firstName, lastName }))
         .catch(async (res) => {
           const data = await res.json();
           if (data && data.errors) {
@@ -55,10 +56,16 @@ function SignupFormPage() {
               inputs[5].style.border = "1px solid rgba(0, 0, 0, 0.4)"
           }
         });
-    } 
-    const inputs = document.getElementsByTagName('input');
-    inputs[5].style.border = "2px solid rgb(192, 53, 21)"
-    return setErrors(['Confirm Password field must be the same as the Password field.']);
+
+        if(signedUser?.id) {
+          history.push('/');
+          setShowSignup(false);
+        }
+    } else {
+      const inputs = document.getElementsByTagName('input');
+      inputs[5].style.border = "2px solid rgb(192, 53, 21)"
+      return setErrors(['Confirm Password field must be the same as the Password field.']);
+    }
 
   };
 
@@ -67,7 +74,7 @@ function SignupFormPage() {
         <div className="signup-form-header">
           <h3>Sign Up</h3>
         </div>
-      <form onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit} className='signup-form-wrapper'>
+      <form onSubmit={handleSubmit} className='signup-form-wrapper'>
         <h2>Welcome to Earthbnb</h2>
         <ul className='errors-list'>
           {errors.map((error, idx) => <li key={idx}><i className='fa fa-exclamation-circle' />  {error}</li>)}
