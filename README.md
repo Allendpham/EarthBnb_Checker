@@ -32,22 +32,22 @@ Upon completion, the site should launch in your local browser. Recommended: Goog
 NOTE: the backend and frontend npm start's must both be running on separate terminals in order to operate the application locally.
 ***
 
-[API DOCUMENTATION](https://github.com/Allendpham/AirBnB/wiki/API-Documentation)
+[API DOCUMENTATION](https://github.com/Allendpham/EarthBnb_Checker/wiki/API-Documentation)
 
 Documentation of the API routes used to make requests to the database.
 
 ***
-[DATABASE SCHEMA](https://github.com/Allendpham/AirBnB/wiki/Database-Schema)
+[DATABASE SCHEMA](https://github.com/Allendpham/EarthBnb_Checker/wiki/Database-Schema)
 
 SQLite3 database schema.
 
 ***
-[FEATURE LIST](https://github.com/Allendpham/AirBnB/wiki/Feature-List)
+[FEATURE LIST](https://github.com/Allendpham/EarthBnb_Checker/wiki/Feature-List)
 
 List of the functional features of the app.
 
 ***
-[REDUX STORE SHAPE](https://github.com/Allendpham/AirBnB/wiki/Redux-Store-Shape)
+[REDUX STORE SHAPE](https://github.com/Allendpham/EarthBnb_Checker/wiki/Redux-Store-Shape)
 
 Pseudo code that illustrates the state of the Redux store for the two features that will be implemented.
 
