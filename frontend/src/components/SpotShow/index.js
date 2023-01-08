@@ -3,7 +3,9 @@ import { useParams, NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { actionGetOneSpot, getAllSpots } from "../../store/spots";
 import { actionGetReviewsOfSpot } from '../../store/reviews';
+import { actionGetBookingsOfSpot } from '../../store/bookings';
 import ReviewItem from '../ReviewItem';
+import BookingForm from '../BookingForm';
 import './index.css';
 
 const SpotShow = () => {
@@ -16,11 +18,14 @@ const SpotShow = () => {
    const allSpotsObj = useSelector(state => state.spots.allSpots);
    const chosenSpot = allSpotsObj[spotId];
 
+   const spotBookingsArr = useSelector(state => Object.values(state.bookings.spot));
+
 
    useEffect(() => {
       // dispatch(getAllSpots());
       dispatch(actionGetOneSpot(parseInt(spotId)));
       dispatch(actionGetReviewsOfSpot(parseInt(spotId)));
+      dispatch(actionGetBookingsOfSpot(parseInt(spotId)));
    }, [dispatch, spotId])
 
 
@@ -93,27 +98,11 @@ const SpotShow = () => {
                   <span><span className='module-price-number'>${singleSpot?.price}</span> per night</span>
                   <span className='module-rating'>★ {displayRating} · {singleSpot?.numReviews} reviews</span>
                </div>
-               <div className='bot-price-module'>
-                  <div className='calculation'>
-                     <div>${singleSpot?.price} x 5 nights</div>
-                     <div>${(singleSpot?.price * 5)}</div>
-                  </div>
 
-                  <div className='calculation'>
-                     <div>Cleaning fee</div>
-                     <div>$100</div>
-                  </div>
-
-                  <div className='calculation'>
-                     <div>Service fee</div>
-                     <div>$255</div>
-                  </div>
-
-                  <div className='final calculation'>
-                     <div>Total before taxes</div>
-                     <div>${(singleSpot?.price * 5 + 100 + 255)}</div>
-                  </div>
+               <div className='booking-form'>
+                  <BookingForm price={singleSpot?.price}/>
                </div>
+
             </div>
          </div>
 
@@ -125,6 +114,14 @@ const SpotShow = () => {
             <ul className='review-list'>
                {spotReviewsArr?.map(review => (
                   <li key={review.id}><ReviewItem review={review}/></li>
+               ))}
+            </ul>
+         </div>
+
+         <div className='existing-bookings'>
+            <ul classname='bookings-list'>
+               {spotBookingsArr?.map(booking => (
+                  <li key={booking.id}>{booking.id}: {booking.startDate}-{booking.endDate}</li>
                ))}
             </ul>
          </div>
