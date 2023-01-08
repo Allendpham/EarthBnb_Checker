@@ -1,9 +1,13 @@
 import { useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { actionGetOneSpot, getAllSpots } from "../../store/spots";
 import { actionGetReviewsOfSpot } from '../../store/reviews';
 import { actionGetBookingsOfSpot } from '../../store/bookings';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+import { DateRange } from 'react-date-range';
 import ReviewItem from '../ReviewItem';
 import BookingForm from '../BookingForm';
 import './index.css';
@@ -20,6 +24,22 @@ const SpotShow = () => {
 
    const spotBookingsArr = useSelector(state => Object.values(state.bookings.spot));
 
+   const tomorrow = new Date()
+   tomorrow.setDate(tomorrow.getDate() + 1)
+
+   let tempCheckOutDate = new Date();
+   tempCheckOutDate.setDate(tempCheckOutDate.getDate() + 5);
+
+   const [checkIn, setCheckIn] = useState(tomorrow);
+   const [checkOut, setCheckOut] = useState(tempCheckOutDate);
+
+   const [dates, setDates] = useState([
+      {
+         startDate: tomorrow,
+         endDate: new Date(checkOut),
+         key: 'selection'
+     }
+   ])
 
    useEffect(() => {
       // dispatch(getAllSpots());
@@ -31,6 +51,11 @@ const SpotShow = () => {
 
    if(!Object.keys(singleSpot).length || !spotReviewsArr) return null;
 
+   const handleSelect = (e) => {
+      setCheckIn(e.selection.startDate)
+      setCheckOut(e.selection.endDate)
+      setDates([e.selection])
+   }
 
    //Code to handle avgRating
    let displayRating;
@@ -91,6 +116,25 @@ const SpotShow = () => {
                      {singleSpot?.Owner?.firstName} has received great ratings from guests!
                   </div>
                   <div className="more-info-title">Free cancellation for 48 hours.</div>
+
+                  <div className='existing-bookings'>
+                  <div className="calendar">
+                                <div className="calendar-header">Available Dates</div>
+                                <DateRange
+                                    ranges={dates}
+                                    editableDateInputs={false}
+                                    moveRangeOnFirstSelection={false}
+                                    rangeColors={['black']}
+                                    onChange={(e) => handleSelect(e)}
+                                    showDateDisplay={false}
+                                    months={2}
+                                    minDate={new Date()}
+                                    direction={"horizontal"}
+                                    // disabledDates={[new Date()]}
+                                />
+                            </div>
+
+                  </div>
                </div>
             </div>
             <div className='price-module'>
@@ -100,7 +144,7 @@ const SpotShow = () => {
                </div>
 
                <div className='booking-form'>
-                  <BookingForm price={singleSpot?.price}/>
+                  <BookingForm price={singleSpot?.price} checkIn={checkIn} checkOut={checkOut} setCheckIn={setCheckIn} setCheckOut={setCheckOut} />
                </div>
 
             </div>
@@ -114,14 +158,6 @@ const SpotShow = () => {
             <ul className='review-list'>
                {spotReviewsArr?.map(review => (
                   <li key={review.id}><ReviewItem review={review}/></li>
-               ))}
-            </ul>
-         </div>
-
-         <div className='existing-bookings'>
-            <ul classname='bookings-list'>
-               {spotBookingsArr?.map(booking => (
-                  <li key={booking.id}>{booking.id}: {booking.startDate}-{booking.endDate}</li>
                ))}
             </ul>
          </div>

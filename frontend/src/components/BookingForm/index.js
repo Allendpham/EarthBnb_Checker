@@ -1,37 +1,23 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-const BookingForm = ({price}) => {
+const BookingForm = ({price, checkIn, checkOut, setCheckIn, setCheckOut}) => {
    const dispatch = useDispatch();
    const history = useHistory();
+   const sessionUser = useSelector(state => state.session.user);
 
-   const currentDate = new Date();
-   const month = currentDate.getMonth() + 1;
-   const day = currentDate.getDate();
-   const year = currentDate.getFullYear();
+   // let tempCheckOutDate = new Date();
+   // tempCheckOutDate.setDate(tempCheckOutDate.getDate() + 5);
+   // const tempCheckOutMonth = tempCheckOutDate.getMonth() + 1;
+   // const tempCheckOutDay = tempCheckOutDate.getDate();
+   // const tempCheckOutYear = tempCheckOutDate.getFullYear();
 
-   //Helper function to parse dates and month numbers
-   const parseNumber = (num) => {
-      let res = '';
-      num < 10 ? res = `0${num}` : res = num;
-      return res;
-   }
+   // let strCheckOutMonth = parseNumber(tempCheckOutMonth);
+   // let strCheckOutDay = parseNumber(tempCheckOutDay);
 
-   let strCheckInMonth = parseNumber(month);
-   let strCheckInDay = parseNumber(day);
-
-   let tempCheckOutDate = new Date();
-   tempCheckOutDate.setDate(tempCheckOutDate.getDate() + 5);
-   const tempCheckOutMonth = tempCheckOutDate.getMonth() + 1;
-   const tempCheckOutDay = tempCheckOutDate.getDate();
-   const tempCheckOutYear = tempCheckOutDate.getFullYear();
-
-   let strCheckOutMonth = parseNumber(tempCheckOutMonth);
-   let strCheckOutDay = parseNumber(tempCheckOutDay);
-
-   const [checkIn, setCheckIn] = useState(`${year}-${strCheckInMonth}-${strCheckInDay}`);
-   const [checkOut, setCheckOut] = useState(`${tempCheckOutYear}-${strCheckOutMonth}-${strCheckOutDay}`);
+   // const [checkIn, setCheckIn] = useState(`${year}-${strCheckInMonth}-${strCheckInDay}`);
+   // const [checkOut, setCheckOut] = useState(`${tempCheckOutYear}-${strCheckOutMonth}-${strCheckOutDay}`);
    const [errors, setErrors] = useState([]);
 
    const handleSubmit = (e) => {
@@ -57,23 +43,29 @@ const BookingForm = ({price}) => {
             CHECK-IN
                <input
                   type="date"
-                  value={checkIn}
-                  min = {`${year}-${strCheckInMonth}-${strCheckInDay}`}
-                  name="stars"
+                  value={new Date(checkIn).toISOString().slice(0, 10)}
+                  min = {new Date().toISOString().split('T')[0]}
                   onChange={(e) => setCheckIn(e.target.value)}
+                  disabled={true}
                   />
             </label>
             CHECK-OUT
                <input
                   type="date"
-                  value={checkOut}
-                  min = {`${year}-${strCheckInMonth}-${strCheckInDay}`}
-                  name="stars"
+                  value={new Date(checkOut).toISOString().slice(0, 10)}
+                  min = {new Date(checkIn).toISOString().split('T')[0]}
                   onChange={(e) => setCheckOut(e.target.value)}
+                  disabled={true}
                   />
          </div>
 
-         <button type="submit">Reserve</button>
+         {sessionUser && (
+            <button type="submit">Reserve</button>
+         )}
+
+         {!sessionUser && (
+            <div>Please login or signup to reserve.</div>
+         )}
       </form>
 
       <div className='bot-price-module'>
