@@ -68,6 +68,13 @@ const BookingForm = ({price, checkIn, checkOut, setCheckIn, setCheckOut}) => {
    let timeDiff = date2.getTime() - date1.getTime();
    let daysDiff = timeDiff / (1000 * 3600 * 24);
 
+   let showButton = true;
+   if(sessionUser){
+      sessionUser?.id !== singleSpot.ownerId ? showButton = true : showButton = false;
+   }
+
+   if(!sessionUser) showButton = false;
+
    return <div>
       <form className='booking-form-wrapper' onSubmit={handleSubmit}>
          <ul className='errors-list'>
@@ -97,19 +104,19 @@ const BookingForm = ({price, checkIn, checkOut, setCheckIn, setCheckOut}) => {
             </div>
          </div>
 
-         {sessionUser && sessionUser.id !== singleSpot.ownerId && (
+         {showButton && (
          <>
             <button id='reserve-button' type="submit">Reserve</button>
             <div className='disclaimer'>You won't be charged yet</div>
          </>
          )}
 
-         {sessionUser.id === singleSpot.ownerId && (
+         {sessionUser?.id === singleSpot?.ownerId && (
             <div>You own this spot!</div>
          )}
 
          {!sessionUser && (
-            <div>Please login or signup to reserve.</div>
+            <div className='disclaimer'>Please login or signup to reserve.</div>
          )}
       </form>
 
