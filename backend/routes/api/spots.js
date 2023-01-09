@@ -8,6 +8,8 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+const { singlePublicFileUpload, singleMulterUpload } = require('../../awsS3');
+
 //Use Express Validator to validate body content of an inputted spot
 const validateSpot = [
    check('address')
@@ -246,10 +248,11 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async(req, res, nex
 })
 
 //Add an Image to a Spot based on the Spot's Id
-router.post('/:spotId/images', requireAuth, async(req, res, next) => {
+router.post('/:spotId/images', requireAuth, singleMulterUpload("image"), async(req, res, next) => {
    const spot = await Spot.findByPk(req.params.spotId);
    const userId = req.user.id;
    const {url, preview} = req.body;
+   const spotImageUrl = await singlePublicFileUpload(req.file);
 
    if(!spot){
       const err = new Error("Spot couldn't be found");
@@ -262,7 +265,7 @@ router.post('/:spotId/images', requireAuth, async(req, res, next) => {
    } else {
       const newImage = await SpotImage.create({
          spotId: spot.id,
-         url,
+         url: spotImageUrl,
          preview
       })
       res.json({

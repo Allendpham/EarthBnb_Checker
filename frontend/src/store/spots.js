@@ -104,14 +104,33 @@ export const actionGetOneSpot = (id) => async (dispatch) => {
 }
 
 export const actionAddImageUrl = (payload ,id) => async (dispatch) => {
+   // const response = await csrfFetch(`/api/spots/${id}/images`, {
+   //    method: 'POST',
+   //    headers: {'Content-Type': 'application/json'},
+   //    body: JSON.stringify(payload)
+   // });
+   // if(response.ok){
+   //    const data = await response.json();
+   //    dispatch(addImageUrl(id, payload));
+   // }
+   const formData = new FormData()
+   if (payload) {
+       const image = payload
+       formData.append('image', image)
+   }
+
    const response = await csrfFetch(`/api/spots/${id}/images`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(payload)
-   });
-   if(response.ok){
-      const data = await response.json();
-      dispatch(addImageUrl(id, payload));
+       method: 'POST',
+       headers: {
+           'Content-Type': 'multipart/form-data'
+       },
+       body: formData
+   })
+
+   if (response.ok) {
+       const createdImage = await response.json()
+       dispatch(addImageUrl(id, createdImage))
+       return createdImage
    }
 }
 

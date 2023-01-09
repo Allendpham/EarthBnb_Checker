@@ -17,6 +17,7 @@ const CreateSpotForm = () => {
    const [description, setDescription] = useState("");
    const [price, setPrice] = useState("");
    const [imgUrl, setImgUrl] = useState("");
+   const [image, setImage] = useState(null)
    const [errors, setErrors] = useState([]);
    const [needDefaultImg, setNeedDefaultImg] = useState(false);
 
@@ -33,20 +34,25 @@ const CreateSpotForm = () => {
          price
       };
 
-      const imgPayload = {
-         url: imgUrl,
-         preview: true
-      }
+      // const imgPayload = {
+      //    url: imgUrl,
+      //    preview: true
+      // }
 
       let imageError = false;
-      if (!/^https?:\/\/.+\.(jpg|jpeg|png|JPG|JPEG|PNG)$/.test(imgUrl)) {
+      if (!image) {
+         setErrors(['Image is required'])
+         imageError = true;
+      }
+
+      if (!/^\S+.(jpg|jpeg|png|JPG|JPEG|PNG)$/.test(image?.name)) {
          setErrors(['Image Url must be valid. (e.g. https://example.jpg) (Accepted: .jpg | .jpeg | .png)']);
          imageError = true;
 
          const inputs = document.getElementsByTagName('input');
 
          // errors.includes("Image Url must be valid. (e.g. https://example.jpg) (.jpg|jpeg|png)") ?
-            inputs[0].style.border = "2px solid rgb(192, 53, 21)"
+         inputs[0].style.border = "2px solid rgb(192, 53, 21)"
             // inputs[0].style.border = '1px solid rgba(0, 0, 0, 0.4)';
       }
 
@@ -95,27 +101,18 @@ const CreateSpotForm = () => {
                               })
 
                               if(createdSpot) {
-                                 dispatch(actionAddImageUrl(imgPayload, createdSpot.id));
+                                 dispatch(actionAddImageUrl(image, createdSpot.id));
                                  history.push('/account')
                               }
       }
 
    }
 
-   function autoFillImage() {
-      // let imgInput = document.getElementById('imgInput');
-      // console.log(imgInput);
-      // imgInput.value = 'https://i.imgur.com/Nkhlnvk.jpg';
-      // // setImgUrl('https://i.imgur.com/Nkhlnvk.jpg');
-      // // imgInput.getAttribute('required');
-      // // imgInput.removeAttribute('required');
-      // imgInput.setAttribute('required', '');
-      // imgInput.required = false;
+   const updateFile = (e) => {
+      const file = e.target.files[0];
+      if (file) setImage(file);
+    };
 
-   }
-
-
-   //To-do: adjust / implement formType as prop
    return (
       <div className='spot-form'>
          <form className='spot-form-wrapper' onSubmit={handleSubmit}>
@@ -125,7 +122,7 @@ const CreateSpotForm = () => {
                {errors.map((error, idx) => <li key={idx}><i className='fa fa-exclamation-circle' />  {error}</li>)}
             </ul>
 
-            <label>
+            {/* <label>
                <input
                type='text'
                value={imgUrl}
@@ -137,7 +134,12 @@ const CreateSpotForm = () => {
                id='imgInput'
                />
             </label>
-            {needDefaultImg && <div onClick={() => autoFillImage()} id='default-image' className='default-image-url'>Default Image: https://i.imgur.com/Nkhlnvk.jpg</div>}
+            {needDefaultImg && <div onClick={() => autoFillImage()} id='default-image' className='default-image-url'>Default Image: https://i.imgur.com/Nkhlnvk.jpg</div>} */}
+
+            <div className='image-input'>
+               <span>Spot Image</span>
+               <input id='image-input-field' type="file" onChange={updateFile} />
+            </div>
 
             <label>
                <input

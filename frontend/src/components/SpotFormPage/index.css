@@ -69,3 +69,32 @@
    font-size: 15px;
    font-weight: 600;
 } */
+
+.image-input {
+   display: flex;
+   flex-direction: row;
+   justify-items: center;
+   border: 1px solid rgba(0, 0, 0, 0.4);
+   border-radius: 10px;
+   margin-bottom: 15px;
+   width: 505px;
+   height: 52px;
+   padding-left: 15px;
+   align-items: center;
+}
+
+#image-input-field {
+   border: none;
+   display: flex;
+   height: fit-content;
+   width: fit-content;
+   align-content: center;
+   padding: 5px;
+   margin: 0;
+}
+
+.image-input span {
+   color:rgba(0, 0, 0, 0.7);
+   margin-right: 15px;
+}
+
