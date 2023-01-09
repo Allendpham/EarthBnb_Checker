@@ -36,8 +36,6 @@ const BookingForm = ({price, checkIn, checkOut, setCheckIn, setCheckOut}) => {
       //Parse Dates
       const strCheckIn = checkIn.toISOString().split('T')[0];
       const strCheckOut = checkOut.toISOString().split('T')[0];
-      console.log('this is the check in date: ', strCheckIn);
-      console.log('this is the checkout date: ', strCheckOut);
 
       const payload = {
          startDate: strCheckIn,
@@ -48,7 +46,7 @@ const BookingForm = ({price, checkIn, checkOut, setCheckIn, setCheckOut}) => {
                            .catch(async(res) => {
                               const data = await res.json();
                               if(data && data.errors){
-                                 setErrors(data.errors);
+                                 setErrors(Object.values(data.errors));
                                  return
                               }
                            })
@@ -73,7 +71,7 @@ const BookingForm = ({price, checkIn, checkOut, setCheckIn, setCheckOut}) => {
    return <div>
       <form className='booking-form-wrapper' onSubmit={handleSubmit}>
          <ul className='errors-list'>
-            {errors.map((error, idx) => <li key={idx}><i className='fa fa-exclamation-circle' />  {error}</li>)}
+            {errors?.map((error, idx) => <li key={idx}><i className='fa fa-exclamation-circle' />  {error}</li>)}
          </ul>
          <div className='date-inputs'>
             <div>
