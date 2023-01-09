@@ -4,6 +4,7 @@ import {Link, NavLink} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import {getAllSpots, actionRemoveASpot} from '../../store/spots';
 import { actionGetReviewsOfUser, actionDeleteAReview } from '../../store/reviews';
+import { actionGetBookingsOfUser, actionDeleteBooking } from '../../store/bookings';
 import './index.css';
 
 function AccountPage (){
@@ -11,10 +12,12 @@ function AccountPage (){
    const spotsArr = useSelector(state => Object.values(state.spots.allSpots));
    const sessionUser = useSelector((state) => state.session.user);
    const userReviewsArr = useSelector(state => Object.values(state.reviews.user));
+   const userBookingsArr = useSelector(state => Object.values(state.bookings.user));
 
    useEffect(() => {
       dispatch(getAllSpots());
       dispatch(actionGetReviewsOfUser());
+      dispatch(actionGetBookingsOfUser());
    }, [dispatch])
 
    const ownedSpots = spotsArr?.filter((spot) => spot.ownerId === sessionUser.id);
@@ -62,6 +65,32 @@ function AccountPage (){
 
          <div className='account-page-info-wrapper'>
             <h1>Hi, {sessionUser?.firstName}</h1>
+
+            <h2>Manage Your Upcoming Trips</h2>
+            {userBookingsArr.length < 1 && <h4>You currently do not have any upcoming trips.</h4>}
+            <ul>
+               {userBookingsArr?.map((booking) => (
+                  <li key={booking?.id}>
+                     <NavLink className="link" key={booking?.Spot?.id} to={`/spots/${booking?.Spot?.id}`}><img className='account-spot-image' src={booking?.Spot?.previewImage} alt='SpotImage'/></NavLink>
+
+                     <div className='spot-info'>
+                        <div className="spot-name">{booking?.Spot?.name}</div>
+                        <div>{booking?.Spot?.city}, {booking?.Spot?.state}</div>
+                        ${booking?.Spot?.price} per night
+                     </div>
+
+                     <div className='booking-dates'>
+                        <div>Start Date: {booking?.startDate}</div>
+                        <div>End Date: {booking?.endDate}</div>
+                     </div>
+
+                     <div>
+                        <button className='review-delete-button' onClick={() => dispatch(actionDeleteBooking(booking?.id))}>Delete</button>
+                     </div>
+                  </li>
+               ))}
+            </ul>
+
             <h2>Manage Your Spots</h2>
             {ownedSpots.length < 1 && (<h4 className='no-owned'>You currently do not own any spots. Consider <NavLink className='no-spot-link' to='/spots/new'> Hosting a Spot! </NavLink></h4>)}
             <ul>

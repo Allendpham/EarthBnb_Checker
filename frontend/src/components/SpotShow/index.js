@@ -119,7 +119,7 @@ const SpotShow = () => {
 
                   <div className='existing-bookings'>
                   <div className="calendar">
-                                <div className="calendar-header">Available Dates</div>
+                                <div className="calendar-header">Select Travel Dates</div>
                                 <DateRange
                                     ranges={dates}
                                     editableDateInputs={false}
